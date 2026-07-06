@@ -269,6 +269,334 @@ export const CURRENCIES = [
   { code: "JPY", symbol: "¥", revenue: 240000, rate: 0.0067, normalized: 1608 },
 ];
 
+// ---------------------------------------------------------------------------
+// TIER 3 FEATURES
+// ---------------------------------------------------------------------------
+
+// Tier 3-1: Real-time live visitor map / globe
+export const LIVE_VISITORS = {
+  total: 47,
+  activeNow: 47,
+  byCountry: [
+    { code: "US", count: 18, lat: 37.0902, lng: -95.7129 },
+    { code: "GB", count: 8, lat: 55.3781, lng: -3.4360 },
+    { code: "DE", count: 6, lat: 51.1657, lng: 10.4515 },
+    { code: "CA", count: 5, lat: 56.1304, lng: -106.3468 },
+    { code: "FR", count: 4, lat: 46.2276, lng: 2.2137 },
+    { code: "JP", count: 3, lat: 36.2048, lng: 138.2529 },
+    { code: "AU", count: 2, lat: -25.2744, lng: 133.7751 },
+    { code: "IN", count: 1, lat: 20.5937, lng: 78.9629 },
+  ],
+  recentActivity: [
+    { time: "Just now", page: "/pricing", country: "US", referrer: "Twitter / X" },
+    { time: "12s ago", page: "/docs", country: "DE", referrer: "Google (organic)" },
+    { time: "24s ago", page: "/blog/launch-post", country: "GB", referrer: "Product Hunt" },
+    { time: "31s ago", page: "/", country: "CA", referrer: "Direct" },
+    { time: "45s ago", page: "/signup", country: "FR", referrer: "ChatGPT / Perplexity" },
+  ],
+};
+
+// Tier 3-2: Visitor journey / session timeline (structured, not video)
+export const VISITOR_JOURNEYS = [
+  {
+    visitorId: "v_abc123",
+    sessionId: "s_xyz789",
+    duration: "4m 32s",
+    pages: [
+      { path: "/", time: "0:00", duration: "1m 12s", referrer: "Twitter / X" },
+      { path: "/pricing", time: "1:12", duration: "2m 18s", referrer: null },
+      { path: "/signup", time: "3:30", duration: "0m 48s", referrer: null },
+      { path: "/checkout", time: "4:18", duration: "0m 14s", referrer: null },
+    ],
+    events: [
+      { name: "pricing_cta", time: "1:45" },
+      { name: "signup_click", time: "3:35" },
+      { name: "checkout_start", time: "4:20" },
+    ],
+    converted: true,
+    revenue: 29,
+  },
+  {
+    visitorId: "v_def456",
+    sessionId: "s_uvw101",
+    duration: "2m 15s",
+    pages: [
+      { path: "/blog/launch-post", time: "0:00", duration: "1m 45s", referrer: "Google (organic)" },
+      { path: "/", time: "1:45", duration: "0m 30s", referrer: null },
+    ],
+    events: [
+      { name: "cta_clicked", time: "1:50" },
+    ],
+    converted: false,
+    revenue: 0,
+  },
+];
+
+// Tier 3-3: Cross-site / cross-domain rollup analytics
+export const CROSS_SITE_ROLLUP = {
+  totalRevenue: 8420,
+  totalVisitors: 14830,
+  totalPageviews: 28410,
+  sites: [
+    { domain: "statly.app", name: "Main", revenue: 6420, visitors: 8920, pageviews: 18420 },
+    { domain: "blog.statly.app", name: "Blog", revenue: 0, visitors: 3840, pageviews: 6120 },
+    { domain: "docs.statly.app", name: "Docs", revenue: 2000, visitors: 2070, pageviews: 3870 },
+  ],
+  crossDomainJourneys: [
+    { path: "blog → main", count: 840, conversions: 42, revenue: 1260 },
+    { path: "docs → main", count: 620, conversions: 31, revenue: 930 },
+    { path: "main → docs → main", count: 180, conversions: 12, revenue: 360 },
+  ],
+};
+
+// Tier 3-4: Cohort analysis (group by acquisition channel, track over time)
+export const COHORT_ANALYSIS = [
+  {
+    cohort: "Twitter / X",
+    cohortSize: 4210,
+    months: [
+      { month: "Month 0", pct: 100, revenue: 3120 },
+      { month: "Month 1", pct: 68, revenue: 2120 },
+      { month: "Month 2", pct: 52, revenue: 1620 },
+      { month: "Month 3", pct: 41, revenue: 1280 },
+      { month: "Month 4", pct: 34, revenue: 1060 },
+      { month: "Month 5", pct: 28, revenue: 870 },
+    ],
+  },
+  {
+    cohort: "Product Hunt",
+    cohortSize: 1340,
+    months: [
+      { month: "Month 0", pct: 100, revenue: 1980 },
+      { month: "Month 1", pct: 72, revenue: 1420 },
+      { month: "Month 2", pct: 58, revenue: 1150 },
+      { month: "Month 3", pct: 48, revenue: 950 },
+      { month: "Month 4", pct: 42, revenue: 830 },
+      { month: "Month 5", pct: 38, revenue: 750 },
+    ],
+  },
+  {
+    cohort: "Google (organic)",
+    cohortSize: 5920,
+    months: [
+      { month: "Month 0", pct: 100, revenue: 1540 },
+      { month: "Month 1", pct: 62, revenue: 950 },
+      { month: "Month 2", pct: 45, revenue: 690 },
+      { month: "Month 3", pct: 35, revenue: 540 },
+      { month: "Month 4", pct: 28, revenue: 430 },
+      { month: "Month 5", pct: 22, revenue: 340 },
+    ],
+  },
+];
+
+// Tier 3-5: Real User Monitoring with computed "Experience Score"
+export const RUM_EXPERIENCE_SCORE = {
+  overall: { score: 87, status: "good", change: 2.4 },
+  byPage: [
+    { path: "/", score: 92, status: "good", lcp: 1.8, inp: 65, cls: 0.04 },
+    { path: "/pricing", score: 78, status: "needs-improvement", lcp: 2.8, inp: 124, cls: 0.12 },
+    { path: "/blog/launch-post", score: 71, status: "poor", lcp: 3.2, inp: 156, cls: 0.18 },
+    { path: "/docs", score: 94, status: "good", lcp: 1.6, inp: 58, cls: 0.03 },
+    { path: "/signup", score: 85, status: "good", lcp: 2.1, inp: 82, cls: 0.07 },
+    { path: "/checkout", score: 68, status: "poor", lcp: 3.5, inp: 189, cls: 0.21 },
+  ],
+  scoreBreakdown: {
+    lcp: { weight: 30, avg: 2.4, contribution: 22 },
+    inp: { weight: 30, avg: 95, contribution: 24 },
+    cls: { weight: 25, avg: 0.09, contribution: 21 },
+    fcp: { weight: 15, avg: 1.9, contribution: 12 },
+    ttfb: { weight: 10, avg: 450, contribution: 8 },
+  },
+};
+
+// Tier 3-6: Bot / AI-crawler traffic detection by page
+export const BOT_TRAFFIC = [
+  {
+    page: "/",
+    totalVisits: 8420,
+    botVisits: 420,
+    botRate: 5.0,
+    bots: [
+      { name: "ChatGPT-Bot", visits: 180, lastSeen: "2 hours ago" },
+      { name: "Googlebot", visits: 120, lastSeen: "1 hour ago" },
+      { name: "GPTBot", visits: 80, lastSeen: "3 hours ago" },
+      { name: "ClaudeBot", visits: 40, lastSeen: "5 hours ago" },
+    ],
+  },
+  {
+    page: "/pricing",
+    totalVisits: 6120,
+    botVisits: 680,
+    botRate: 11.1,
+    bots: [
+      { name: "ChatGPT-Bot", visits: 320, lastSeen: "1 hour ago" },
+      { name: "GPTBot", visits: 240, lastSeen: "2 hours ago" },
+      { name: "ClaudeBot", visits: 80, lastSeen: "4 hours ago" },
+      { name: "Googlebot", visits: 40, lastSeen: "6 hours ago" },
+    ],
+  },
+  {
+    page: "/docs",
+    totalVisits: 2910,
+    botVisits: 520,
+    botRate: 17.9,
+    bots: [
+      { name: "Googlebot", visits: 280, lastSeen: "30 min ago" },
+      { name: "ChatGPT-Bot", visits: 140, lastSeen: "2 hours ago" },
+      { name: "Bingbot", visits: 60, lastSeen: "8 hours ago" },
+      { name: "GPTBot", visits: 40, lastSeen: "12 hours ago" },
+    ],
+  },
+];
+
+// Tier 3-7: Individual visitor profiles with identity linking
+export const VISITOR_PROFILES = [
+  {
+    visitorId: "v_abc123",
+    identity: { email: "massive.cat@example.com", name: "Massive Cat", firstSeen: "2024-07-15" },
+    totalVisits: 12,
+    totalSessions: 8,
+    totalTime: "2h 45m",
+    totalRevenue: 249,
+    firstVisit: { date: "2024-07-15", referrer: "Twitter / X" },
+    lastVisit: { date: "2025-01-20", page: "/dashboard" },
+    journey: [
+      { date: "2024-07-15", page: "/", action: "visit" },
+      { date: "2024-07-15", page: "/pricing", action: "visit" },
+      { date: "2024-07-15", page: "/signup", action: "signup" },
+      { date: "2024-07-15", page: "/checkout", action: "purchase", amount: 29 },
+      { date: "2024-09-10", page: "/blog/launch-post", action: "visit" },
+      { date: "2024-09-10", page: "/pricing", action: "visit" },
+      { date: "2024-09-10", page: "/checkout", action: "upgrade", amount: 99 },
+      { date: "2025-01-20", page: "/dashboard", action: "login" },
+    ],
+    attributes: { plan: "Yearly", status: "active", country: "US" },
+  },
+  {
+    visitorId: "v_def456",
+    identity: { email: "sarah.kim@company.com", name: "Sarah Kim", firstSeen: "2024-08-22" },
+    totalVisits: 6,
+    totalSessions: 4,
+    totalTime: "1h 12m",
+    totalRevenue: 58,
+    firstVisit: { date: "2024-08-22", referrer: "Google (organic)" },
+    lastVisit: { date: "2025-01-18", page: "/docs" },
+    journey: [
+      { date: "2024-08-22", page: "/docs", action: "visit" },
+      { date: "2024-08-22", page: "/pricing", action: "visit" },
+      { date: "2024-08-23", page: "/signup", action: "signup" },
+      { date: "2024-08-23", page: "/checkout", action: "purchase", amount: 29 },
+      { date: "2024-11-05", page: "/pricing", action: "visit" },
+      { date: "2024-11-05", page: "/checkout", action: "upgrade", amount: 29 },
+      { date: "2025-01-18", page: "/docs", action: "visit" },
+    ],
+    attributes: { plan: "Pro", status: "active", country: "GB" },
+  },
+];
+
+// ---------------------------------------------------------------------------
+// TIER 4 FEATURES
+// ---------------------------------------------------------------------------
+
+// Tier 4-1: Purchase-likelihood prediction ("who's likely to buy")
+export const PURCHASE_PREDICTION = {
+  modelAccuracy: 87,
+  lastTrained: "2 days ago",
+  highIntentVisitors: [
+    { visitorId: "v_abc123", email: "massive.cat@example.com", likelihood: 92, signals: ["visited pricing 3x", "started checkout", "high engagement"], estimatedValue: 99 },
+    { visitorId: "v_def456", email: "sarah.kim@company.com", likelihood: 88, signals: ["read blog post", "clicked CTA", "returning visitor"], estimatedValue: 29 },
+    { visitorId: "v_ghi789", email: null, likelihood: 85, signals: ["multiple page views", "long session duration", "from high-value channel"], estimatedValue: 29 },
+    { visitorId: "v_jkl012", email: "john.doe@startup.io", likelihood: 81, signals: ["visited docs", "checked pricing", "from Product Hunt"], estimatedValue: 99 },
+    { visitorId: "v_mno345", email: null, likelihood: 78, signals: ["clicked demo video", "spent 5+ minutes", "from organic search"], estimatedValue: 29 },
+  ],
+  topSignals: [
+    { signal: "Started checkout", weight: 35, impact: "high" },
+    { signal: "Visited pricing page", weight: 25, impact: "high" },
+    { signal: "Multiple sessions", weight: 20, impact: "medium" },
+    { signal: "From high-converting channel", weight: 15, impact: "medium" },
+    { signal: "Long session duration", weight: 10, impact: "low" },
+  ],
+};
+
+// Tier 4-2: Heatmaps (click / scroll / move aggregation)
+export const HEATMAPS = {
+  page: "/pricing",
+  totalViews: 6120,
+  clickHeatmap: [
+    { x: 50, y: 30, intensity: 95, element: "CTA button", clicks: 2840 },
+    { x: 50, y: 45, intensity: 78, element: "Feature card 1", clicks: 1890 },
+    { x: 30, y: 45, intensity: 65, element: "Feature card 2", clicks: 1240 },
+    { x: 70, y: 45, intensity: 58, element: "Feature card 3", clicks: 980 },
+    { x: 50, y: 60, intensity: 42, element: "FAQ section", clicks: 620 },
+    { x: 50, y: 80, intensity: 35, element: "Footer link", clicks: 420 },
+  ],
+  scrollHeatmap: {
+    depth: [
+      { depth: 0, pct: 100, label: "Top of page" },
+      { depth: 25, pct: 82, label: "25% scrolled" },
+      { depth: 50, pct: 64, label: "50% scrolled" },
+      { depth: 75, pct: 38, label: "75% scrolled" },
+      { depth: 100, pct: 18, label: "Bottom of page" },
+    ],
+    avgScrollDepth: 52,
+  },
+  moveHeatmap: [
+    { x: 50, y: 30, intensity: 88, element: "CTA button area" },
+    { x: 50, y: 45, intensity: 72, element: "Pricing cards" },
+    { x: 50, y: 60, intensity: 45, element: "FAQ section" },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// TIER 5 FEATURES
+// ---------------------------------------------------------------------------
+
+// Tier 5-1: A/B experimentation platform
+export const AB_EXPERIMENTS = [
+  {
+    id: "exp_001",
+    name: "Pricing CTA Button Color",
+    status: "running",
+    started: "2024-12-15",
+    variants: [
+      { name: "Control (Blue)", visitors: 3120, conversions: 124, conversionRate: 3.97, revenue: 3616 },
+      { name: "Variant A (Green)", visitors: 3080, conversions: 156, conversionRate: 5.06, revenue: 4524 },
+      { name: "Variant B (Red)", visitors: 3150, conversions: 142, conversionRate: 4.51, revenue: 4118 },
+    ],
+    winner: "Variant A (Green)",
+    significance: 95,
+    improvement: 27.5,
+  },
+  {
+    id: "exp_002",
+    name: "Homepage Hero Copy",
+    status: "completed",
+    started: "2024-11-01",
+    ended: "2024-12-01",
+    variants: [
+      { name: "Control", visitors: 4890, conversions: 186, conversionRate: 3.80, revenue: 5394 },
+      { name: "Variant A", visitors: 4920, conversions: 198, conversionRate: 4.02, revenue: 5742 },
+      { name: "Variant B", visitors: 4780, conversions: 192, conversionRate: 4.02, revenue: 5568 },
+    ],
+    winner: "Variant A",
+    significance: 82,
+    improvement: 5.8,
+  },
+  {
+    id: "exp_003",
+    name: "Checkout Form Layout",
+    status: "draft",
+    started: null,
+    variants: [
+      { name: "Control (Single column)", visitors: 0, conversions: 0, conversionRate: 0, revenue: 0 },
+      { name: "Variant A (Two column)", visitors: 0, conversions: 0, conversionRate: 0, revenue: 0 },
+    ],
+    winner: null,
+    significance: null,
+    improvement: null,
+  },
+];
+
 export const money = (n) =>
   (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
