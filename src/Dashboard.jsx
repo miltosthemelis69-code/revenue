@@ -137,50 +137,47 @@ export default function Dashboard() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "18px 28px",
+          padding: "16px 24px",
           borderBottom: `1px solid ${theme.cardBorder}`,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div
             style={{
-              width: 22,
-              height: 22,
-              borderRadius: 5,
-              background: `linear-gradient(135deg,${theme.accent},${theme.accentDark})`,
+              width: 20,
+              height: 20,
+              borderRadius: 4,
+              background: theme.accent,
             }}
           />
-          <span style={{ fontWeight: 600, fontSize: 15, letterSpacing: 0.2 }}>Ledger</span>
-          <span style={{ fontSize: 11, color: theme.dim, padding: "2px 8px", background: theme.surface, borderRadius: 4, marginLeft: 4 }}>
-            v2 · Tier 1–5 mock
-          </span>
+          <span style={{ fontWeight: 500, fontSize: 14 }}>Ledger</span>
           <div
             onClick={() => setSiteOpen((s) => !s)}
             style={{
               display: "flex",
               alignItems: "center",
               gap: 6,
-              marginLeft: 10,
-              padding: "5px 10px",
-              borderRadius: 7,
+              marginLeft: 8,
+              padding: "4px 8px",
+              borderRadius: 6,
               background: theme.surface,
               border: `1px solid ${theme.surfaceBorder}`,
               cursor: "pointer",
-              fontSize: 13,
+              fontSize: 12,
               color: theme.muted,
             }}
           >
             {SITE.domain}
-            <ChevronDown size={13} />
+            <ChevronDown size={12} />
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, color: theme.green }}>
-            <Radio size={13} />
-            <span className="mono">{liveCount}</span> live
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: theme.green }}>
+            <Radio size={12} />
+            <span className="mono">{liveCount}</span>
           </div>
-          <div style={{ fontSize: 13, color: theme.dim }}>Last 30 days</div>
+          <div style={{ fontSize: 12, color: theme.dim }}>Last 30 days</div>
         </div>
       </div>
 
@@ -188,9 +185,9 @@ export default function Dashboard() {
         {/* Sidebar */}
         <nav
           style={{
-            width: 200,
+            width: 180,
             borderRight: `1px solid ${theme.cardBorder}`,
-            padding: "16px 10px",
+            padding: "12px 8px",
             flexShrink: 0,
             overflowY: "auto",
           }}
@@ -206,31 +203,28 @@ export default function Dashboard() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 10,
+                  gap: 8,
                   width: "100%",
-                  padding: "9px 12px",
-                  marginBottom: 2,
+                  padding: "6px 10px",
+                  marginBottom: 1,
                   border: "1px solid transparent",
-                  borderRadius: 8,
+                  borderRadius: 6,
                   background: active ? theme.surface : "transparent",
                   color: active ? theme.text : theme.muted,
-                  fontSize: 13,
+                  fontSize: 12,
                   cursor: "pointer",
                   textAlign: "left",
                 }}
               >
-                <Icon size={15} />
+                <Icon size={14} />
                 {label}
-                {tier && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: TIER_COLOR[tier], fontWeight: 600 }}>T{tier}</span>
-                )}
               </button>
             );
           })}
         </nav>
 
         {/* Main content */}
-        <main style={{ flex: 1, padding: "24px 28px 60px", maxWidth: 1180, overflow: "auto" }}>
+        <main style={{ flex: 1, padding: "20px 24px 48px", maxWidth: 1200, overflow: "auto" }}>
           <ActiveView />
         </main>
       </div>

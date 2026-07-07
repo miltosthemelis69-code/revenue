@@ -1,90 +1,100 @@
 export const theme = {
-  bg: "#0b0f14",
-  card: "#10151c",
-  cardBorder: "#1c232c",
-  rowBorder: "#171d25",
-  muted: "#7c8794",
-  dim: "#5c6773",
-  text: "#edeff2",
-  accent: "#f2b441",
-  accentDark: "#c98a1f",
-  green: "#7de3a8",
-  red: "#e88b8b",
-  teal: "#3fa7a0",
-  surface: "#171d25",
-  surfaceBorder: "#232b35",
-  purple: "#b394f0",
-  orange: "#e8935a",
+  bg: "#09090b",
+  card: "#0a0a0c",
+  cardBorder: "#18181b",
+  rowBorder: "#141416",
+  muted: "#a1a1aa",
+  dim: "#71717a",
+  text: "#fafafa",
+  accent: "#3b82f6",
+  accentDark: "#2563eb",
+  green: "#22c55e",
+  red: "#ef4444",
+  teal: "#14b8a6",
+  surface: "#0c0c0e",
+  surfaceBorder: "#1f1f23",
+  purple: "#a855f7",
+  orange: "#f97316",
 };
 
 export const globalCss = `
-  .mono { font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace; }
+  .mono { font-family: 'SF Mono', 'Monaco', 'IBM Plex Mono', monospace; }
   .card {
     background: ${theme.card};
     border: 1px solid ${theme.cardBorder};
-    border-radius: 10px;
+    border-radius: 8px;
   }
-  .row-hover:hover { background: #12181f; }
-  .nav-item:hover { background: #12181f; }
-  .nav-item.active { background: #171d25; border-color: #2a3440; }
-  ::selection { background: #f2b44133; }
+  .row-hover:hover { background: ${theme.surface}; }
+  .nav-item:hover { background: ${theme.surface}; }
+  .nav-item.active { background: ${theme.surface}; border-color: ${theme.cardBorder}; }
+  ::selection { background: ${theme.accent}33; }
   input, select, textarea {
     font-family: inherit;
     color: ${theme.text};
     background: ${theme.surface};
     border: 1px solid ${theme.surfaceBorder};
-    border-radius: 7px;
-    padding: 8px 10px;
+    border-radius: 6px;
+    padding: 8px 12px;
     font-size: 13px;
     outline: none;
+    transition: border-color 0.15s ease;
   }
   input:focus, select:focus, textarea:focus {
-    border-color: #3a4654;
+    border-color: ${theme.accent};
   }
   button.primary {
-    background: linear-gradient(135deg, ${theme.accent}, ${theme.accentDark});
-    color: #0b0f14;
+    background: ${theme.accent};
+    color: white;
     border: none;
-    border-radius: 7px;
-    padding: 8px 14px;
+    border-radius: 6px;
+    padding: 8px 16px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
+    transition: opacity 0.15s ease;
   }
+  button.primary:hover { opacity: 0.9; }
   button.ghost {
     background: transparent;
     color: ${theme.muted};
     border: 1px solid ${theme.surfaceBorder};
-    border-radius: 7px;
-    padding: 8px 14px;
+    border-radius: 6px;
+    padding: 8px 16px;
     font-size: 13px;
     cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  button.ghost:hover {
+    color: ${theme.text};
+    border-color: ${theme.cardBorder};
   }
 `;
 
 export function cardTitleStyle() {
   return {
-    fontSize: 12.5,
-    color: theme.muted,
-    marginBottom: 14,
+    fontSize: 11,
+    color: theme.dim,
+    marginBottom: 16,
     textTransform: "uppercase",
-    letterSpacing: 0.6,
+    letterSpacing: 0.5,
+    fontWeight: 500,
   };
 }
 
 export function barTrackStyle() {
   return {
-    height: 4,
+    height: 3,
     borderRadius: 2,
     background: theme.rowBorder,
     overflow: "hidden",
   };
 }
 
-export function barFillStyle(pct, gradient = `linear-gradient(90deg,${theme.teal},${theme.accent})`) {
+export function barFillStyle(pct, color = theme.accent) {
   return {
     width: `${pct}%`,
     height: "100%",
-    background: gradient,
+    background: color,
+    borderRadius: 2,
   };
 }
