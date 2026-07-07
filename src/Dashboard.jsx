@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowLeft } from "lucide-react";
 import { SITE } from "./data/mockTier1";
 import { theme, globalCss } from "./styles";
 import OverviewView from "./views/Overview";
@@ -101,7 +101,7 @@ const VIEWS = {
   share: ShareView,
 };
 
-export default function Dashboard() {
+export default function Dashboard({ onBack }) {
   const [view, setView] = useState("overview");
   const [liveCount, setLiveCount] = useState(7);
   const [siteOpen, setSiteOpen] = useState(false);
@@ -139,6 +139,24 @@ export default function Dashboard() {
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              title="Back to sites"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+                color: theme.faint,
+              }}
+            >
+              <ArrowLeft size={15} />
+            </button>
+          )}
           <span className="serif" style={{ fontSize: 17, fontStyle: "italic", letterSpacing: 0.1, whiteSpace: "nowrap" }}>
             notjustvisits<span style={{ color: theme.credit }}>.</span>
           </span>
