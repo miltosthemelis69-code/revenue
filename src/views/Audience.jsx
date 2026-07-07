@@ -5,7 +5,7 @@ import { theme, cardTitleStyle, barTrackStyle, barFillStyle } from "../styles";
 function BreakdownCard({ title, items, showPct = true }) {
   const max = Math.max(...items.map((i) => i.visits || i.pct));
   return (
-    <div className="card" style={{ padding: "18px 20px" }}>
+    <div className="panel" style={{ padding: "18px 20px" }}>
       <div style={cardTitleStyle()}>{title}</div>
       {items.map((item, idx) => (
         <div
@@ -13,7 +13,7 @@ function BreakdownCard({ title, items, showPct = true }) {
           className="row-hover"
           style={{
             padding: "10px 4px",
-            borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
+            borderTop: idx === 0 ? "none" : `1px solid ${theme.lineFaint}`,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, marginBottom: 6 }}>
@@ -35,7 +35,7 @@ export default function AudienceView() {
   return (
     <>
       <div style={{ marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Audience</h2>
+        <h2 className="serif" style={{ fontSize: 20, fontWeight: 400, margin: "0 0 6px" }}>Audience</h2>
         <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
           Device, browser, OS, and country — read from the visitor&apos;s browser automatically.
         </p>
@@ -47,9 +47,9 @@ export default function AudienceView() {
         <BreakdownCard title="Operating systems" items={OPERATING_SYSTEMS} />
       </div>
 
-      <div className="card" style={{ padding: "18px 20px" }}>
+      <div className="panel" style={{ padding: "18px 20px" }}>
         <div style={cardTitleStyle()}>Countries</div>
-        <div style={{ display: "grid", gridTemplateColumns: "40px 1fr 60px 80px 80px", gap: 8, fontSize: 11, color: theme.dim, padding: "0 4px 8px", borderBottom: `1px solid ${theme.rowBorder}` }}>
+        <div style={{ display: "grid", gridTemplateColumns: "40px 1fr 60px 80px 80px", gap: 8, fontSize: 11, color: theme.faint, padding: "0 4px 8px", borderBottom: `1px solid ${theme.lineFaint}` }}>
           <span />
           <span>Country</span>
           <span style={{ textAlign: "right" }}>Share</span>
@@ -66,14 +66,14 @@ export default function AudienceView() {
               gap: 8,
               alignItems: "center",
               padding: "10px 4px",
-              borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
+              borderTop: idx === 0 ? "none" : `1px solid ${theme.lineFaint}`,
             }}
           >
-            <span className="mono" style={{ fontSize: 11, color: theme.dim }}>{c.code}</span>
+            <span className="mono" style={{ fontSize: 11, color: theme.faint }}>{c.code}</span>
             <div>
               <div style={{ fontSize: 13.5 }}>{c.label}</div>
               <div style={{ ...barTrackStyle(), marginTop: 6, maxWidth: 280 }}>
-                <div style={barFillStyle(c.pct, `linear-gradient(90deg,${theme.accent},${theme.teal})`)} />
+                <div style={barFillStyle(c.pct, theme.credit)} />
               </div>
             </div>
             <div className="mono" style={{ textAlign: "right", fontSize: 12.5, color: theme.muted }}>{c.pct}%</div>

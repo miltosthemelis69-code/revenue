@@ -11,7 +11,7 @@ export default function PagesView() {
   return (
     <>
       <div style={{ marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Pageviews</h2>
+        <h2 className="serif" style={{ fontSize: 20, fontWeight: 400, margin: "0 0 6px" }}>Pageviews</h2>
         <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
           Every page open is counted — see which pages get traffic and how visitors engage.
         </p>
@@ -29,9 +29,9 @@ export default function PagesView() {
       )}
 
       <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 14 }}>
-        <div className="card" style={{ padding: "18px 20px" }}>
+        <div className="panel" style={{ padding: "18px 20px" }}>
           <div style={cardTitleStyle()}>Top pages</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px 60px", gap: 8, fontSize: 11, color: theme.dim, padding: "0 4px 8px", borderBottom: `1px solid ${theme.rowBorder}` }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px 60px", gap: 8, fontSize: 11, color: theme.faint, padding: "0 4px 8px", borderBottom: `1px solid ${theme.lineFaint}` }}>
             <span>Page</span>
             <span style={{ textAlign: "right" }}>Views</span>
             <span style={{ textAlign: "right" }}>Unique</span>
@@ -48,12 +48,12 @@ export default function PagesView() {
                 gap: 8,
                 alignItems: "center",
                 padding: "11px 4px",
-                borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
+                borderTop: idx === 0 ? "none" : `1px solid ${theme.lineFaint}`,
               }}
             >
               <div>
                 <div style={{ fontSize: 13.5 }}>{p.title}</div>
-                <div className="mono" style={{ fontSize: 11.5, color: theme.dim, marginTop: 2 }}>{p.path}</div>
+                <div className="mono" style={{ fontSize: 11.5, color: theme.faint, marginTop: 2 }}>{p.path}</div>
                 <div style={{ ...barTrackStyle(), marginTop: 6 }}>
                   <div style={barFillStyle((p.views / maxViews) * 100)} />
                 </div>
@@ -66,12 +66,12 @@ export default function PagesView() {
           ))}
         </div>
 
-        <div className="card" style={{ padding: "18px 20px" }}>
+        <div className="panel" style={{ padding: "18px 20px" }}>
           <div style={cardTitleStyle()}>Pageview trend (14d)</div>
           <div style={{ height: 180, marginTop: 8 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={PAGEVIEW_TREND}>
-                <Line type="monotone" dataKey="views" stroke={theme.teal} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="views" stroke={theme.credit} strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>

@@ -1,154 +1,115 @@
+// Design system for Ledger — an homage to double-entry bookkeeping conventions:
+// green ink for credits/positive figures, red ink for debits/refunds, and otherwise
+// quiet, high-contrast, paper-and-ink neutrals. No gradients, no glow, no pill badges.
+
 export const theme = {
-  bg: "#f6f7f9",
-  appRail: "#111827",
-  appRailSoft: "#1f2937",
-  card: "#ffffff",
-  cardBorder: "#e4e7ec",
-  rowBorder: "#edf0f3",
-  muted: "#667085",
-  dim: "#98a2b3",
-  text: "#101828",
-  heading: "#0b1220",
-  accent: "#2563eb",
-  accentDark: "#1d4ed8",
-  accentSoft: "#eff6ff",
-  green: "#16a34a",
-  greenSoft: "#ecfdf3",
-  red: "#dc2626",
-  redSoft: "#fef2f2",
-  teal: "#0f766e",
-  tealSoft: "#f0fdfa",
-  orange: "#ea580c",
-  orangeSoft: "#fff7ed",
-  surface: "#f8fafc",
-  surfaceBorder: "#e5e7eb",
-  purple: "#7c3aed",
+  bg: "#121110",         // ink — warm near-black, not blue-black
+  panel: "#161412",      // barely-raised surface for grouped content
+  panelHover: "#1a1815",
+  line: "#2b2824",       // hairline dividers / borders
+  lineFaint: "#1d1b18",  // quieter internal separators
+  text: "#ECE7DD",       // paper
+  muted: "#9c968b",
+  faint: "#66605a",
+  credit: "#8FB39A",     // ledger green — the one accent, used for positive figures + primary actions
+  creditDeep: "#4F6F58",
+  debit: "#A8655C",      // ledger red — negative figures / refunds only, never decorative
+  amber: "#C9A24B",      // reserved strictly for "needs attention" states (Tier 4/5 predictive stuff), used sparingly
 };
 
 export const globalCss = `
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
   * { box-sizing: border-box; }
-  html, body, #root { min-height: 100%; margin: 0; }
-  body {
-    background: ${theme.bg};
-    color: ${theme.text};
-    -webkit-font-smoothing: antialiased;
+  html, body { background: ${theme.bg}; }
+  .serif { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  .panel {
+    background: ${theme.panel};
+    border: 1px solid ${theme.line};
+    border-radius: 3px;
   }
-  .mono { font-family: 'SF Mono', 'Monaco', 'IBM Plex Mono', monospace; }
-  .card {
-    background: ${theme.card};
-    border: 1px solid ${theme.cardBorder};
-    border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
-  }
-  .row-hover { transition: background 0.15s ease; }
-  .row-hover:hover { background: ${theme.surface}; }
-  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-  .nav-item.active { background: #fff; color: ${theme.heading}; }
-  ::selection { background: ${theme.accent}22; }
+  .row-hover:hover { background: ${theme.panelHover}; }
+  .nav-item { transition: color .12s ease, border-color .12s ease; }
+  .nav-item:hover { color: ${theme.text} !important; }
+  ::selection { background: #8FB39A33; }
+
   input, select, textarea {
-    font-family: inherit;
+    font-family: 'IBM Plex Sans', sans-serif;
     color: ${theme.text};
-    background: #fff;
-    border: 1px solid ${theme.surfaceBorder};
-    border-radius: 6px;
-    padding: 8px 12px;
+    background: ${theme.bg};
+    border: 1px solid ${theme.line};
+    border-radius: 3px;
+    padding: 8px 10px;
     font-size: 13px;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  input:focus, select:focus, textarea:focus {
-    border-color: ${theme.accent};
-    box-shadow: 0 0 0 3px ${theme.accent}16;
+  input:focus, select:focus, textarea:focus { border-color: ${theme.faint}; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible,
+  button:focus-visible, [tabindex]:focus-visible {
+    outline: 1px solid ${theme.credit};
+    outline-offset: 2px;
   }
-  button { font-family: inherit; }
+
   button.primary {
-    background: ${theme.heading};
-    color: white;
+    background: ${theme.credit};
+    color: ${theme.bg};
     border: none;
-    border-radius: 6px;
+    border-radius: 3px;
     padding: 8px 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.15s ease, opacity 0.15s ease;
   }
-  button.primary:hover { opacity: 0.92; }
+  button.primary:hover { background: #9fc2ac; }
   button.ghost {
-    background: #fff;
+    background: transparent;
     color: ${theme.muted};
-    border: 1px solid ${theme.surfaceBorder};
-    border-radius: 6px;
+    border: 1px solid ${theme.line};
+    border-radius: 3px;
     padding: 8px 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.15s ease;
   }
-  button.ghost:hover {
-    color: ${theme.text};
-    border-color: ${theme.cardBorder};
-    background: ${theme.surface};
-  }
-  .shell {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 244px minmax(0, 1fr);
-  }
-  .main-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
-    gap: 16px;
-  }
-  .overview-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  @media (max-width: 1080px) {
-    .shell { grid-template-columns: 76px minmax(0, 1fr); }
-    .rail-label, .rail-section-title, .rail-meta { display: none !important; }
-    .rail-logo { justify-content: center; }
-    .main-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 760px) {
-    .shell { display: block; }
-    .sidebar { position: static !important; width: auto !important; min-height: auto !important; }
-    .sidebar-section { margin-bottom: 10px !important; }
-    .content-wrap { padding: 16px !important; }
-    .topbar { flex-direction: column; align-items: flex-start !important; gap: 12px; }
-    .sidebar-nav { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-    .overview-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  }
-  @media (max-width: 520px) {
-    .overview-kpis { grid-template-columns: 1fr !important; }
+  button.ghost:hover { border-color: ${theme.faint}; color: ${theme.text}; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
   }
 `;
 
-export function cardTitleStyle() {
+export function sectionLabelStyle() {
   return {
     fontSize: 11,
-    color: theme.dim,
-    marginBottom: 14,
+    color: theme.faint,
+    marginBottom: 16,
     textTransform: "uppercase",
-    letterSpacing: 0,
-    fontWeight: 700,
+    letterSpacing: 1.1,
+    fontWeight: 600,
+    paddingBottom: 10,
+    borderBottom: `1px solid ${theme.lineFaint}`,
   };
 }
 
+// kept as an alias so existing call sites keep working
+export const cardTitleStyle = sectionLabelStyle;
+
 export function barTrackStyle() {
   return {
-    height: 6,
-    borderRadius: 999,
-    background: theme.rowBorder,
+    height: 3,
+    borderRadius: 0,
+    background: theme.lineFaint,
     overflow: "hidden",
   };
 }
 
-export function barFillStyle(pct, color = theme.accent) {
+export function barFillStyle(pct, color = theme.credit) {
   return {
-    width: `${pct}%`,
+    width: `${Math.max(0, Math.min(100, pct))}%`,
     height: "100%",
     background: color,
-    borderRadius: 999,
   };
 }

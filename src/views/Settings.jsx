@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Plus, X, Clock, Shield, Fingerprint } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { DEFAULT_SETTINGS, TIMEZONE_OPTIONS, VISITOR_ID_CONFIG } from "../data/mockTier1";
 import { theme, cardTitleStyle } from "../styles";
+import { Status } from "./shared";
 
 export default function SettingsView() {
   const [timezone, setTimezone] = useState(DEFAULT_SETTINGS.timezone);
@@ -30,17 +31,15 @@ export default function SettingsView() {
   return (
     <>
       <div style={{ marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Settings</h2>
+        <h2 className="serif" style={{ fontSize: 20, fontWeight: 400, margin: "0 0 6px" }}>Settings</h2>
         <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
           Excluded paths, timezone, and basic tracking preferences for this site.
         </p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, maxWidth: 900 }}>
-        <div className="card" style={{ padding: "18px 20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
-            <Clock size={14} /> Timezone
-          </div>
+        <div className="panel" style={{ padding: "18px 20px" }}>
+          <div style={cardTitleStyle()}>Timezone</div>
           <label style={{ fontSize: 12.5, color: theme.muted, display: "block", marginBottom: 8 }}>
             Dashboard dates and charts use this timezone
           </label>
@@ -51,10 +50,8 @@ export default function SettingsView() {
           </select>
         </div>
 
-        <div className="card" style={{ padding: "18px 20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
-            <Shield size={14} /> Privacy
-          </div>
+        <div className="panel" style={{ padding: "18px 20px" }}>
+          <div style={cardTitleStyle()}>Privacy</div>
           <label style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13.5, marginBottom: 12, cursor: "pointer" }}>
             <input type="checkbox" checked={respectDoNotTrack} onChange={(e) => setRespectDoNotTrack(e.target.checked)} />
             Respect Do Not Track browser setting
@@ -65,10 +62,8 @@ export default function SettingsView() {
           </label>
         </div>
 
-        <div className="card" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
-            <Fingerprint size={14} /> Visitor identification
-          </div>
+        <div className="panel" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>
+          <div style={cardTitleStyle()}>Visitor identification</div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
               <div style={{ fontSize: 13.5, marginBottom: 4 }}>
@@ -77,28 +72,26 @@ export default function SettingsView() {
               <div style={{ fontSize: 12, color: theme.muted }}>{VISITOR_ID_CONFIG.description}</div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-              <span style={{ fontSize: 11, padding: "4px 10px", borderRadius: 10, background: `${theme.green}20`, color: theme.green, fontWeight: 500 }}>
-                No cookie banner needed
-              </span>
+              <Status color={theme.credit}>No cookie banner needed</Status>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 20, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${theme.rowBorder}` }}>
+          <div style={{ display: "flex", gap: 20, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${theme.lineFaint}` }}>
             <div>
-              <div style={{ fontSize: 11, color: theme.dim }}>Retention window</div>
+              <div style={{ fontSize: 11, color: theme.faint }}>Retention window</div>
               <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.retention}</div>
             </div>
             <div>
-              <div style={{ fontSize: 11, color: theme.dim }}>Cookie required</div>
+              <div style={{ fontSize: 11, color: theme.faint }}>Cookie required</div>
               <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.cookieRequired ? "Yes" : "No"}</div>
             </div>
             <div>
-              <div style={{ fontSize: 11, color: theme.dim }}>Consent banner</div>
+              <div style={{ fontSize: 11, color: theme.faint }}>Consent banner</div>
               <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.consentBanner ? "Required" : "Not required"}</div>
             </div>
           </div>
         </div>
 
-        <div className="card" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>
+        <div className="panel" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>
           <div style={cardTitleStyle()}>Excluded paths</div>
           <p style={{ margin: "0 0 14px", fontSize: 12.5, color: theme.muted }}>
             Visits to these paths won&apos;t be counted. Supports wildcards with <span className="mono">*</span>.
@@ -126,13 +119,13 @@ export default function SettingsView() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "8px 12px",
-                  background: theme.surface,
-                  borderRadius: 7,
-                  border: `1px solid ${theme.surfaceBorder}`,
+                  background: theme.panel,
+                  borderRadius: 3,
+                  border: `1px solid ${theme.line}`,
                 }}
               >
                 <span className="mono" style={{ fontSize: 12.5 }}>{path}</span>
-                <button type="button" onClick={() => removePath(path)} style={{ background: "none", border: "none", color: theme.dim, cursor: "pointer", padding: 4 }}>
+                <button type="button" onClick={() => removePath(path)} style={{ background: "none", border: "none", color: theme.faint, cursor: "pointer", padding: 4 }}>
                   <X size={14} />
                 </button>
               </div>
@@ -143,7 +136,7 @@ export default function SettingsView() {
 
       <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 12 }}>
         <button type="button" className="primary" onClick={handleSave}>Save settings</button>
-        {saved && <span style={{ fontSize: 13, color: theme.green }}>Saved (mock — no backend yet)</span>}
+        {saved && <span style={{ fontSize: 13, color: theme.credit }}>Saved (mock — no backend yet)</span>}
       </div>
     </>
   );

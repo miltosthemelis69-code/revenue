@@ -1,5 +1,4 @@
 import React from "react";
-import { Target, MousePointerClick } from "lucide-react";
 import { CUSTOM_EVENTS, GOALS } from "../data/mockTier1";
 import { theme, cardTitleStyle, barTrackStyle, barFillStyle } from "../styles";
 
@@ -9,30 +8,28 @@ export default function EventsView() {
   return (
     <>
       <div style={{ marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Events & goals</h2>
+        <h2 className="serif" style={{ fontSize: 19, fontWeight: 400, margin: "0 0 6px" }}>Events & goals</h2>
         <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
           Custom events you tag in code — button clicks, sign-ups, checkout steps — plus goal completion rates.
         </p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 14 }}>
-        <div className="card" style={{ padding: "18px 20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
-            <MousePointerClick size={14} /> Custom events
-          </div>
+        <div className="panel" style={{ padding: "18px 20px" }}>
+          <div style={cardTitleStyle()}>Custom events</div>
           {CUSTOM_EVENTS.map((e, idx) => (
             <div
               key={e.key}
               className="row-hover"
               style={{
                 padding: "12px 4px",
-                borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
+                borderTop: idx === 0 ? "none" : `1px solid ${theme.lineFaint}`,
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
                   <div style={{ fontSize: 13.5 }}>{e.name}</div>
-                  <div className="mono" style={{ fontSize: 11, color: theme.dim, marginTop: 3 }}>
+                  <div className="mono" style={{ fontSize: 11, color: theme.faint, marginTop: 3 }}>
                     ledger.track(&apos;{e.key}&apos;)
                   </div>
                 </div>
@@ -51,16 +48,14 @@ export default function EventsView() {
           ))}
         </div>
 
-        <div className="card" style={{ padding: "18px 20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
-            <Target size={14} /> Goals
-          </div>
+        <div className="panel" style={{ padding: "18px 20px" }}>
+          <div style={cardTitleStyle()}>Goals</div>
           {GOALS.map((g, idx) => (
             <div
               key={g.target}
               style={{
                 padding: "14px 4px",
-                borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
+                borderTop: idx === 0 ? "none" : `1px solid ${theme.lineFaint}`,
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
@@ -68,7 +63,7 @@ export default function EventsView() {
                 <div className="mono" style={{ fontSize: 14, fontWeight: 600 }}>{g.completed}</div>
               </div>
               <div style={barTrackStyle()}>
-                <div style={barFillStyle(Math.min(g.rate * 3, 100), `linear-gradient(90deg,${theme.green},${theme.teal})`)} />
+                <div style={barFillStyle(Math.min(g.rate * 3, 100))} />
               </div>
               <div style={{ fontSize: 11.5, color: theme.muted, marginTop: 6 }}>
                 {g.rate}% of all visitors · target: <span className="mono">{g.target}</span>
@@ -76,9 +71,9 @@ export default function EventsView() {
             </div>
           ))}
 
-          <div style={{ marginTop: 16, padding: "12px 14px", background: theme.surface, borderRadius: 8, fontSize: 12, color: theme.muted, lineHeight: 1.5 }}>
+          <div style={{ marginTop: 16, padding: "12px 14px", background: theme.bg, border: `1px solid ${theme.lineFaint}`, borderRadius: 3, fontSize: 12, color: theme.muted, lineHeight: 1.5 }}>
             Add tracking in your app:
-            <pre className="mono" style={{ margin: "8px 0 0", fontSize: 11, color: theme.accent, whiteSpace: "pre-wrap" }}>
+            <pre className="mono" style={{ margin: "8px 0 0", fontSize: 11, color: theme.credit, whiteSpace: "pre-wrap" }}>
 {`// On button click
 ledger.track('signup_click');
 

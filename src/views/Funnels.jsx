@@ -7,11 +7,11 @@ function FunnelCard({ funnel }) {
   const maxCount = Math.max(...funnel.steps.map((s) => s.count));
 
   return (
-    <div className="card" style={{ padding: "18px 20px" }}>
+    <div className="panel" style={{ padding: "18px 20px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <div style={{ fontSize: 15, fontWeight: 600 }}>{funnel.name}</div>
         <div style={{ fontSize: 12, color: theme.muted }}>
-          <span className="mono" style={{ color: theme.accent, fontWeight: 600 }}>{funnel.overallConversion}%</span> overall conversion
+          <span className="mono" style={{ color: theme.credit, fontWeight: 600 }}>{funnel.overallConversion}%</span> overall conversion
         </div>
       </div>
 
@@ -27,7 +27,7 @@ function FunnelCard({ funnel }) {
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div className="mono" style={{ fontSize: 13 }}>{step.count.toLocaleString()}</div>
               {step.dropoff > 0 && (
-                <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: theme.red }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: theme.debit }}>
                   <TrendingDown size={12} />
                   <span className="mono">-{step.dropoff}%</span>
                 </div>
@@ -47,7 +47,7 @@ export default function FunnelsView() {
   return (
     <>
       <div style={{ marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Funnels</h2>
+        <h2 className="serif" style={{ fontSize: 20, fontWeight: 400, margin: "0 0 6px" }}>Funnels</h2>
         <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
           Track conversion sequences — see where visitors drop off in your key flows.
         </p>
@@ -59,7 +59,7 @@ export default function FunnelsView() {
         ))}
       </div>
 
-      <div className="card" style={{ padding: "16px 18px", marginTop: 14, fontSize: 12.5, color: theme.muted }}>
+      <div className="panel" style={{ padding: "16px 18px", marginTop: 14, fontSize: 12.5, color: theme.muted }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
           <Filter size={14} />
           <strong>Creating funnels</strong>
