@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Plus, X, Clock, Shield } from "lucide-react";
-import { DEFAULT_SETTINGS, TIMEZONE_OPTIONS } from "../data/mockTier1";
+import { Plus, X, Clock, Shield, Fingerprint } from "lucide-react";
+import { DEFAULT_SETTINGS, TIMEZONE_OPTIONS, VISITOR_ID_CONFIG } from "../data/mockTier1";
 import { theme, cardTitleStyle } from "../styles";
 
 export default function SettingsView() {
@@ -63,6 +63,39 @@ export default function SettingsView() {
             <input type="checkbox" checked={trackHashRoutes} onChange={(e) => setTrackHashRoutes(e.target.checked)} />
             Track hash-based routes (e.g. /app#/settings)
           </label>
+        </div>
+
+        <div className="card" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>
+          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
+            <Fingerprint size={14} /> Visitor identification
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontSize: 13.5, marginBottom: 4 }}>
+                {VISITOR_ID_CONFIG.method === "daily-rotating" ? "Cookieless, daily-rotating ID" : VISITOR_ID_CONFIG.method}
+              </div>
+              <div style={{ fontSize: 12, color: theme.muted }}>{VISITOR_ID_CONFIG.description}</div>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <span style={{ fontSize: 11, padding: "4px 10px", borderRadius: 10, background: `${theme.green}20`, color: theme.green, fontWeight: 500 }}>
+                No cookie banner needed
+              </span>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 20, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${theme.rowBorder}` }}>
+            <div>
+              <div style={{ fontSize: 11, color: theme.dim }}>Retention window</div>
+              <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.retention}</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: theme.dim }}>Cookie required</div>
+              <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.cookieRequired ? "Yes" : "No"}</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: theme.dim }}>Consent banner</div>
+              <div className="mono" style={{ fontSize: 13, marginTop: 2 }}>{VISITOR_ID_CONFIG.consentBanner ? "Required" : "Not required"}</div>
+            </div>
+          </div>
         </div>
 
         <div className="card" style={{ padding: "18px 20px", gridColumn: "1 / -1" }}>

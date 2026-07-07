@@ -13,15 +13,16 @@ import {
   Gauge,
   Filter,
   Plug,
-  Globe,
-  Map,
+  Layers,
+  Globe2,
   Route,
   TrendingUp,
+  Sparkles,
+  Bot,
+  UserCircle2,
   Brain,
   Flame,
   FlaskConical,
-  Robot,
-  User,
 } from "lucide-react";
 import { SITE } from "./data/mockTier1";
 import { theme, globalCss } from "./styles";
@@ -37,16 +38,15 @@ import WebVitalsView from "./views/WebVitals";
 import FunnelsView from "./views/Funnels";
 import IntegrationsView from "./views/Integrations";
 import SitesView from "./views/Sites";
-import LiveVisitorsView from "./views/LiveVisitors";
+import LiveView from "./views/Live";
 import JourneysView from "./views/Journeys";
-import CrossSiteView from "./views/CrossSite";
 import CohortsView from "./views/Cohorts";
-import RumScoreView from "./views/RumScore";
-import BotDetectionView from "./views/BotDetection";
-import VisitorProfilesView from "./views/VisitorProfiles";
-import PurchasePredictionView from "./views/PurchasePrediction";
+import ExperienceView from "./views/Experience";
+import BotTrafficView from "./views/BotTraffic";
+import ProfilesView from "./views/Profiles";
+import PredictionsView from "./views/Predictions";
 import HeatmapsView from "./views/Heatmaps";
-import ABExperimentsView from "./views/ABExperiments";
+import ExperimentsView from "./views/Experiments";
 
 const NAV = [
   { id: "overview", label: "Overview", icon: LayoutDashboard, tier: null },
@@ -54,23 +54,22 @@ const NAV = [
   { id: "sources", label: "Sources", icon: Link2, tier: 1 },
   { id: "audience", label: "Audience", icon: Users, tier: 1 },
   { id: "events", label: "Events", icon: MousePointerClick, tier: 1 },
+  { id: "settings", label: "Settings", icon: Settings, tier: 1 },
+  { id: "share", label: "Share", icon: Share2, tier: 1 },
   { id: "autoclicks", label: "Auto Clicks", icon: Zap, tier: 2 },
   { id: "webvitals", label: "Web Vitals", icon: Gauge, tier: 2 },
   { id: "funnels", label: "Funnels", icon: Filter, tier: 2 },
   { id: "integrations", label: "Integrations", icon: Plug, tier: 2 },
-  { id: "sites", label: "Sites & Team", icon: Globe, tier: 2 },
-  { id: "livevisitors", label: "Live Visitors", icon: Radio, tier: 3 },
+  { id: "sites", label: "Sites & Team", icon: Layers, tier: 2 },
+  { id: "live", label: "Live", icon: Globe2, tier: 3 },
   { id: "journeys", label: "Journeys", icon: Route, tier: 3 },
-  { id: "crosssite", label: "Cross-Site", icon: TrendingUp, tier: 3 },
-  { id: "cohorts", label: "Cohorts", icon: Users, tier: 3 },
-  { id: "rumscore", label: "RUM Score", icon: Gauge, tier: 3 },
-  { id: "botdetection", label: "Bot Detection", icon: Robot, tier: 3 },
-  { id: "visitorprofiles", label: "Visitor Profiles", icon: User, tier: 3 },
-  { id: "purchaseprediction", label: "Purchase Prediction", icon: Brain, tier: 4 },
+  { id: "cohorts", label: "Cohorts & LTV", icon: TrendingUp, tier: 3 },
+  { id: "experience", label: "Experience", icon: Sparkles, tier: 3 },
+  { id: "bots", label: "Bot Traffic", icon: Bot, tier: 3 },
+  { id: "profiles", label: "Profiles", icon: UserCircle2, tier: 3 },
+  { id: "predictions", label: "Predictions", icon: Brain, tier: 4 },
   { id: "heatmaps", label: "Heatmaps", icon: Flame, tier: 4 },
-  { id: "abexperiments", label: "A/B Tests", icon: FlaskConical, tier: 5 },
-  { id: "settings", label: "Settings", icon: Settings, tier: 1 },
-  { id: "share", label: "Share", icon: Share2, tier: 1 },
+  { id: "experiments", label: "Experiments", icon: FlaskConical, tier: 5 },
 ];
 
 const VIEWS = {
@@ -84,18 +83,25 @@ const VIEWS = {
   funnels: FunnelsView,
   integrations: IntegrationsView,
   sites: SitesView,
-  livevisitors: LiveVisitorsView,
+  live: LiveView,
   journeys: JourneysView,
-  crosssite: CrossSiteView,
   cohorts: CohortsView,
-  rumscore: RumScoreView,
-  botdetection: BotDetectionView,
-  visitorprofiles: VisitorProfilesView,
-  purchaseprediction: PurchasePredictionView,
+  experience: ExperienceView,
+  bots: BotTrafficView,
+  profiles: ProfilesView,
+  predictions: PredictionsView,
   heatmaps: HeatmapsView,
-  abexperiments: ABExperimentsView,
+  experiments: ExperimentsView,
   settings: SettingsView,
   share: ShareView,
+};
+
+const TIER_COLOR = {
+  1: theme.dim,
+  2: theme.accent,
+  3: theme.teal,
+  4: theme.orange,
+  5: theme.purple,
 };
 
 export default function Dashboard() {
@@ -146,7 +152,7 @@ export default function Dashboard() {
           />
           <span style={{ fontWeight: 600, fontSize: 15, letterSpacing: 0.2 }}>Ledger</span>
           <span style={{ fontSize: 11, color: theme.dim, padding: "2px 8px", background: theme.surface, borderRadius: 4, marginLeft: 4 }}>
-            v1 · Tier 1-5 mock
+            v2 · Tier 1–5 mock
           </span>
           <div
             onClick={() => setSiteOpen((s) => !s)}
@@ -186,6 +192,7 @@ export default function Dashboard() {
             borderRight: `1px solid ${theme.cardBorder}`,
             padding: "16px 10px",
             flexShrink: 0,
+            overflowY: "auto",
           }}
         >
           {NAV.map(({ id, label, icon: Icon, tier }) => {
@@ -214,20 +221,8 @@ export default function Dashboard() {
               >
                 <Icon size={15} />
                 {label}
-                {tier === 1 && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: theme.dim }}>T1</span>
-                )}
-                {tier === 2 && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: theme.accent }}>T2</span>
-                )}
-                {tier === 3 && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: theme.green }}>T3</span>
-                )}
-                {tier === 4 && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: "#f59e0b" }}>T4</span>
-                )}
-                {tier === 5 && !active && (
-                  <span style={{ marginLeft: "auto", fontSize: 9, color: theme.red }}>T5</span>
+                {tier && !active && (
+                  <span style={{ marginLeft: "auto", fontSize: 9, color: TIER_COLOR[tier], fontWeight: 600 }}>T{tier}</span>
                 )}
               </button>
             );

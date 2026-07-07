@@ -1,150 +1,132 @@
-import React from "react";
-import { Flame, MousePointer2, ArrowDown } from "lucide-react";
+import React, { useState } from "react";
+import { Flame, MousePointer2, ArrowDownWideNarrow } from "lucide-react";
 import { HEATMAPS } from "../data/mockTier1";
-import { theme, cardTitleStyle, barTrackStyle, barFillStyle } from "../styles";
+import { theme, cardTitleStyle } from "../styles";
+
+function DotOverlay(points, colorFn) {
+  return points.map((p, idx) => (
+    <div
+      key={idx}
+      title={`${p.element}${p.clicks ? ` — ${p.clicks} clicks` : ""}`}
+      style={{
+        position: "absolute",
+        left: `${p.x}%`,
+        top: `${p.y}%`,
+        width: 14 + p.intensity * 0.3,
+        height: 14 + p.intensity * 0.3,
+        borderRadius: "50%",
+        background: colorFn(p.intensity),
+        transform: "translate(-50%, -50%)",
+        filter: "blur(1px)",
+      }}
+    />
+  ));
+}
 
 export default function HeatmapsView() {
+  const [mode, setMode] = useState("click");
+
   return (
     <>
-      <div style={cardTitleStyle()}>Heatmaps</div>
-      <div style={{ fontSize: 12, color: theme.muted, marginBottom: 20 }}>
-        Page: <span style={{ fontWeight: 500, color: theme.text }}>{HEATMAPS.page}</span> · {HEATMAPS.totalViews.toLocaleString()} total views
+      <div style={{ marginBottom: 18 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Heatmaps</h2>
+        <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
+          Where people click, scroll to, and move their mouse on <span className="mono">{HEATMAPS.page}</span> — {HEATMAPS.totalViews.toLocaleString()} views analyzed.
+        </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-        {/* Click Heatmap */}
-        <div className="card" style={{ padding: "20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 8 }}>
-            <MousePointer2 size={16} />
-            Click Heatmap
+      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+        {["click", "scroll", "move"].map((m) => (
+          <button
+            key={m}
+            type="button"
+            className={mode === m ? "primary" : "ghost"}
+            style={{ fontSize: 12, textTransform: "capitalize" }}
+            onClick={() => setMode(m)}
+          >
+            {m}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 14 }}>
+        <div className="card" style={{ padding: "18px 20px" }}>
+          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
+            <Flame size={14} /> {mode === "click" ? "Click" : mode === "scroll" ? "Scroll" : "Mouse movement"} heatmap
           </div>
+
+          {/* Fake page silhouette with heat dots overlaid */}
           <div
             style={{
-              marginTop: 16,
-              height: 200,
-              background: theme.surface,
-              borderRadius: 8,
-              border: `1px solid ${theme.surfaceBorder}`,
               position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              height: 320,
+              background: theme.surface,
+              border: `1px solid ${theme.surfaceBorder}`,
+              borderRadius: 8,
+              overflow: "hidden",
             }}
           >
-            <div style={{ textAlign: "center", color: theme.muted, fontSize: 12 }}>
-              Click heatmap visualization
-            </div>
-            {HEATMAPS.clickHeatmap.map((spot, idx) => (
-              <div
-                key={idx}
-                style={{
-                  position: "absolute",
-                  left: `${spot.x}%`,
-                  top: `${spot.y}%`,
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: `rgba(239, 68, 68, ${spot.intensity / 100})`,
-                  transform: "translate(-50%, -50%)",
-                  filter: "blur(8px)",
-                }}
-                title={`${spot.element}: ${spot.clicks} clicks`}
-              />
-            ))}
+            {/* rough page layout guides */}
+            <div style={{ position: "absolute", top: "10%", left: "20%", right: "20%", height: 28, background: theme.rowBorder, borderRadius: 4 }} />
+            <div style={{ position: "absolute", top: "38%", left: "10%", width: "25%", height: 60, background: theme.rowBorder, borderRadius: 4 }} />
+            <div style={{ position: "absolute", top: "38%", left: "38%", width: "25%", height: 60, background: theme.rowBorder, borderRadius: 4 }} />
+            <div style={{ position: "absolute", top: "38%", left: "66%", width: "25%", height: 60, background: theme.rowBorder, borderRadius: 4 }} />
+            <div style={{ position: "absolute", top: "58%", left: "20%", right: "20%", height: 20, background: theme.rowBorder, borderRadius: 4 }} />
+            <div style={{ position: "absolute", top: "78%", left: "20%", right: "20%", height: 16, background: theme.rowBorder, borderRadius: 4 }} />
+
+            {mode === "click" && DotOverlay(HEATMAPS.clickHeatmap, (i) => `rgba(232,139,139,${0.15 + (i / 100) * 0.6})`)}
+            {mode === "move" && DotOverlay(HEATMAPS.moveHeatmap, (i) => `rgba(242,180,65,${0.15 + (i / 100) * 0.6})`)}
+            {mode === "scroll" &&
+              HEATMAPS.scrollHeatmap.depth.map((d) => (
+                <div
+                  key={d.depth}
+                  style={{
+                    position: "absolute",
+                    top: `${d.depth}%`,
+                    left: 0,
+                    right: 0,
+                    height: 2,
+                    background: `rgba(63,167,160,${d.pct / 100})`,
+                  }}
+                  title={`${d.label}: ${d.pct}% of visitors reached here`}
+                />
+              ))}
           </div>
-          <div style={{ marginTop: 16 }}>
-            {HEATMAPS.clickHeatmap.map((spot, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "10px 0",
-                  borderTop: idx === 0 ? "none" : `1px solid ${theme.rowBorder}`,
-                }}
-              >
-                <span style={{ fontSize: 13 }}>{spot.element}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <span className="mono" style={{ fontSize: 13 }}>{spot.clicks} clicks</span>
-                  <span style={{ fontSize: 12, color: theme.muted }}>{spot.intensity}% intensity</span>
+
+          {mode === "click" && (
+            <div style={{ marginTop: 12 }}>
+              {HEATMAPS.clickHeatmap.map((c) => (
+                <div key={c.element} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "5px 0", color: theme.muted }}>
+                  <span>{c.element}</span>
+                  <span className="mono">{c.clicks.toLocaleString()} clicks</span>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Scroll Heatmap */}
-        <div className="card" style={{ padding: "20px" }}>
-          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 8 }}>
-            <ArrowDown size={16} />
-            Scroll Heatmap
+        <div className="card" style={{ padding: "18px 20px" }}>
+          <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
+            <ArrowDownWideNarrow size={14} /> Scroll depth
           </div>
-          <div style={{ marginTop: 16 }}>
-            <div style={{ fontSize: 12, color: theme.muted, marginBottom: 12 }}>
-              Average scroll depth: <span className="mono" style={{ fontWeight: 600 }}>{HEATMAPS.scrollHeatmap.avgScrollDepth}%</span>
-            </div>
-            {HEATMAPS.scrollHeatmap.depth.map((depth, idx) => (
-              <div key={idx} style={{ marginBottom: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <span style={{ fontSize: 13 }}>{depth.label}</span>
-                  <span className="mono" style={{ fontSize: 13 }}>{depth.pct}% reached</span>
-                </div>
-                <div style={barTrackStyle()}>
-                  <div style={barFillStyle(depth.pct)} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+          <div className="mono" style={{ fontSize: 28, fontWeight: 600, marginBottom: 4 }}>{HEATMAPS.scrollHeatmap.avgScrollDepth}%</div>
+          <div style={{ fontSize: 12, color: theme.muted, marginBottom: 16 }}>average scroll depth</div>
 
-      {/* Movement Heatmap */}
-      <div className="card" style={{ padding: "20px", marginTop: 20 }}>
-        <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 8 }}>
-          <Flame size={16} />
-          Movement Heatmap
-        </div>
-        <div
-          style={{
-            marginTop: 16,
-            height: 150,
-            background: theme.surface,
-            borderRadius: 8,
-            border: `1px solid ${theme.surfaceBorder}`,
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div style={{ textAlign: "center", color: theme.muted, fontSize: 12 }}>
-            Mouse movement heatmap visualization
-          </div>
-          {HEATMAPS.moveHeatmap.map((spot, idx) => (
-            <div
-              key={idx}
-              style={{
-                position: "absolute",
-                left: `${spot.x}%`,
-                top: `${spot.y}%`,
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-                background: `rgba(249, 115, 22, ${spot.intensity / 100})`,
-                transform: "translate(-50%, -50%)",
-                filter: "blur(12px)",
-              }}
-              title={spot.element}
-            />
-          ))}
-        </div>
-        <div style={{ marginTop: 16, display: "flex", gap: 16 }}>
-          {HEATMAPS.moveHeatmap.map((spot, idx) => (
-            <div key={idx} style={{ fontSize: 12, color: theme.muted }}>
-              {spot.element}: <span className="mono">{spot.intensity}%</span>
+          {HEATMAPS.scrollHeatmap.depth.map((d) => (
+            <div key={d.depth} style={{ marginBottom: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
+                <span style={{ color: theme.muted }}>{d.label}</span>
+                <span className="mono">{d.pct}%</span>
+              </div>
+              <div style={{ height: 5, borderRadius: 3, background: theme.rowBorder, overflow: "hidden" }}>
+                <div style={{ width: `${d.pct}%`, height: "100%", background: `linear-gradient(90deg,${theme.teal},${theme.green})` }} />
+              </div>
             </div>
           ))}
+
+          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11.5, color: theme.dim, marginTop: 14 }}>
+            <MousePointer2 size={12} /> Switch tabs above to see click and mouse-movement overlays
+          </div>
         </div>
       </div>
     </>

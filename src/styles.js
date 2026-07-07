@@ -13,6 +13,8 @@ export const theme = {
   teal: "#3fa7a0",
   surface: "#171d25",
   surfaceBorder: "#232b35",
+  purple: "#b394f0",
+  orange: "#e8935a",
 };
 
 export const globalCss = `

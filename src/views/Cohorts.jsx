@@ -1,67 +1,78 @@
 import React from "react";
-import { Users, TrendingUp } from "lucide-react";
-import { COHORT_ANALYSIS } from "../data/mockTier1";
+import { TrendingUp } from "lucide-react";
+import { COHORT_ANALYSIS, money } from "../data/mockTier1";
 import { theme, cardTitleStyle } from "../styles";
-import { money } from "../data/mockTier1";
 
 export default function CohortsView() {
   return (
     <>
-      <div style={cardTitleStyle()}>Cohort Analysis by Acquisition Channel</div>
-      {COHORT_ANALYSIS.map((cohort, idx) => (
-        <div key={cohort.cohort} className="card" style={{ padding: "20px", marginBottom: 20 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Users size={16} />
-              <span style={{ fontSize: 15, fontWeight: 500 }}>{cohort.cohort}</span>
-            </div>
-            <div style={{ fontSize: 12, color: theme.dim }}>
-              Cohort size: <span className="mono">{cohort.cohortSize.toLocaleString()}</span>
-            </div>
-          </div>
+      <div style={{ marginBottom: 18 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 6px" }}>Cohorts & channel LTV</h2>
+        <p style={{ margin: 0, fontSize: 13.5, color: theme.muted }}>
+          Group customers by how they first found you, then watch how each group's revenue actually holds up over time —
+          not just what they were worth on day one.
+        </p>
+      </div>
 
-          {/* Cohort Table */}
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-              <thead>
-                <tr style={{ borderBottom: `1px solid ${theme.rowBorder}` }}>
-                  <th style={{ textAlign: "left", padding: "10px 8px", color: theme.muted, fontWeight: 500 }}>Month</th>
-                  {cohort.months.map((month, mIdx) => (
-                    <th key={mIdx} style={{ textAlign: "center", padding: "10px 8px", color: theme.muted, fontWeight: 500 }}>
-                      {month.month}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ padding: "12px 8px", fontWeight: 500 }}>Retention %</td>
-                  {cohort.months.map((month, mIdx) => (
-                    <td
-                      key={mIdx}
-                      style={{
-                        textAlign: "center",
-                        padding: "12px 8px",
-                        background: month.pct >= 70 ? `${theme.green}10` : month.pct >= 40 ? `${theme.accent}10` : "transparent",
-                      }}
-                    >
-                      <span className="mono" style={{ fontWeight: 600 }}>{month.pct}%</span>
-                    </td>
-                  ))}
-                </tr>
-                <tr style={{ borderTop: `1px solid ${theme.rowBorder}` }}>
-                  <td style={{ padding: "12px 8px", fontWeight: 500 }}>Revenue</td>
-                  {cohort.months.map((month, mIdx) => (
-                    <td key={mIdx} style={{ textAlign: "center", padding: "12px 8px" }}>
-                      <span className="mono">{money(month.revenue)}</span>
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div className="card" style={{ padding: "18px 20px" }}>
+        <div style={{ ...cardTitleStyle(), display: "flex", alignItems: "center", gap: 6 }}>
+          <TrendingUp size={14} /> Retained revenue by acquisition channel
         </div>
-      ))}
+
+        <div style={{ display: "grid", gridTemplateColumns: "110px repeat(6, 1fr)", gap: 4, fontSize: 10.5, color: theme.dim, padding: "0 4px 10px" }}>
+          <span>Channel</span>
+          {COHORT_ANALYSIS[0].months.map((m) => (
+            <span key={m.month} style={{ textAlign: "center" }}>{m.month.replace("Month ", "M")}</span>
+          ))}
+        </div>
+
+        {COHORT_ANALYSIS.map((cohort, ridx) => (
+          <div key={cohort.cohort} style={{ marginBottom: 18 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+              <span style={{ fontSize: 13.5 }}>{cohort.cohort}</span>
+              <span style={{ fontSize: 11.5, color: theme.dim }}>{cohort.cohortSize.toLocaleString()} customers in cohort</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "110px repeat(6, 1fr)", gap: 4, alignItems: "center" }}>
+              <span style={{ fontSize: 11, color: theme.muted }}>% retained</span>
+              {cohort.months.map((m) => {
+                // color scale: green (high retention) fading to dim red-ish as it drops
+                const heat = m.pct / 100;
+                const bg = `rgba(125, 227, 168, ${0.12 + heat * 0.55})`;
+                return (
+                  <div
+                    key={m.month}
+                    title={`${m.month}: ${m.pct}% retained · ${money(m.revenue)} revenue`}
+                    style={{
+                      textAlign: "center",
+                      padding: "8px 2px",
+                      borderRadius: 6,
+                      background: bg,
+                      fontSize: 11.5,
+                    }}
+                    className="mono"
+                  >
+                    {m.pct}%
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "110px repeat(6, 1fr)", gap: 4, alignItems: "center", marginTop: 3 }}>
+              <span></span>
+              {cohort.months.map((m) => (
+                <div key={m.month} className="mono" style={{ textAlign: "center", fontSize: 10.5, color: theme.dim }}>
+                  {money(m.revenue)}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div style={{ marginTop: 6, padding: "12px 14px", background: theme.surface, borderRadius: 8, fontSize: 12, color: theme.muted, lineHeight: 1.5 }}>
+          <strong>Reading this:</strong> Product Hunt customers actually retain better by Month 5 (38%) than Twitter/X customers (28%),
+          even though Twitter brought in more total revenue on Day 0. Google's organic customers retain worst of the three (22%) despite
+          bringing in the most raw visitors — a channel that looks strong on signups alone can still be the weakest long-term bet.
+        </div>
+      </div>
     </>
   );
 }
