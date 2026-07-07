@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Radio,
   ChevronDown,
+  ChevronRight,
   LayoutDashboard,
   FileText,
   Link2,
@@ -48,28 +49,46 @@ import PredictionsView from "./views/Predictions";
 import HeatmapsView from "./views/Heatmaps";
 import ExperimentsView from "./views/Experiments";
 
-const NAV = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard, tier: null },
-  { id: "pages", label: "Pages", icon: FileText, tier: 1 },
-  { id: "sources", label: "Sources", icon: Link2, tier: 1 },
-  { id: "audience", label: "Audience", icon: Users, tier: 1 },
-  { id: "events", label: "Events", icon: MousePointerClick, tier: 1 },
-  { id: "settings", label: "Settings", icon: Settings, tier: 1 },
-  { id: "share", label: "Share", icon: Share2, tier: 1 },
-  { id: "autoclicks", label: "Auto Clicks", icon: Zap, tier: 2 },
-  { id: "webvitals", label: "Web Vitals", icon: Gauge, tier: 2 },
-  { id: "funnels", label: "Funnels", icon: Filter, tier: 2 },
-  { id: "integrations", label: "Integrations", icon: Plug, tier: 2 },
-  { id: "sites", label: "Sites & Team", icon: Layers, tier: 2 },
-  { id: "live", label: "Live", icon: Globe2, tier: 3 },
-  { id: "journeys", label: "Journeys", icon: Route, tier: 3 },
-  { id: "cohorts", label: "Cohorts & LTV", icon: TrendingUp, tier: 3 },
-  { id: "experience", label: "Experience", icon: Sparkles, tier: 3 },
-  { id: "bots", label: "Bot Traffic", icon: Bot, tier: 3 },
-  { id: "profiles", label: "Profiles", icon: UserCircle2, tier: 3 },
-  { id: "predictions", label: "Predictions", icon: Brain, tier: 4 },
-  { id: "heatmaps", label: "Heatmaps", icon: Flame, tier: 4 },
-  { id: "experiments", label: "Experiments", icon: FlaskConical, tier: 5 },
+const NAV_SECTIONS = [
+  {
+    title: "Analytics",
+    items: [
+      { id: "overview", label: "Overview", icon: LayoutDashboard },
+      { id: "pages", label: "Pages", icon: FileText },
+      { id: "sources", label: "Sources", icon: Link2 },
+      { id: "audience", label: "Audience", icon: Users },
+      { id: "events", label: "Events", icon: MousePointerClick },
+    ],
+  },
+  {
+    title: "Advanced",
+    items: [
+      { id: "autoclicks", label: "Auto Clicks", icon: Zap },
+      { id: "webvitals", label: "Web Vitals", icon: Gauge },
+      { id: "funnels", label: "Funnels", icon: Filter },
+      { id: "integrations", label: "Integrations", icon: Plug },
+    ],
+  },
+  {
+    title: "Insights",
+    items: [
+      { id: "sites", label: "Sites & Team", icon: Layers },
+      { id: "live", label: "Live Visitors", icon: Globe2 },
+      { id: "journeys", label: "Journeys", icon: Route },
+      { id: "cohorts", label: "Cohorts & LTV", icon: TrendingUp },
+      { id: "experience", label: "Experience", icon: Sparkles },
+      { id: "bots", label: "Bot Traffic", icon: Bot },
+      { id: "profiles", label: "Profiles", icon: UserCircle2 },
+    ],
+  },
+  {
+    title: "Growth",
+    items: [
+      { id: "predictions", label: "Predictions", icon: Brain },
+      { id: "heatmaps", label: "Heatmaps", icon: Flame },
+      { id: "experiments", label: "Experiments", icon: FlaskConical },
+    ],
+  },
 ];
 
 const VIEWS = {
@@ -96,18 +115,11 @@ const VIEWS = {
   share: ShareView,
 };
 
-const TIER_COLOR = {
-  1: theme.dim,
-  2: theme.accent,
-  3: theme.teal,
-  4: theme.orange,
-  5: theme.purple,
-};
-
 export default function Dashboard() {
   const [view, setView] = useState("overview");
   const [liveCount, setLiveCount] = useState(7);
   const [siteOpen, setSiteOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState(["Analytics"]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -185,42 +197,128 @@ export default function Dashboard() {
         {/* Sidebar */}
         <nav
           style={{
-            width: 180,
+            width: 200,
             borderRight: `1px solid ${theme.cardBorder}`,
             padding: "12px 8px",
             flexShrink: 0,
             overflowY: "auto",
           }}
         >
-          {NAV.map(({ id, label, icon: Icon, tier }) => {
-            const active = view === id;
+          {NAV_SECTIONS.map((section) => {
+            const isExpanded = expandedSections.includes(section.title);
             return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setView(id)}
-                className={`nav-item${active ? " active" : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  width: "100%",
-                  padding: "6px 10px",
-                  marginBottom: 1,
-                  border: "1px solid transparent",
-                  borderRadius: 6,
-                  background: active ? theme.surface : "transparent",
-                  color: active ? theme.text : theme.muted,
-                  fontSize: 12,
-                  cursor: "pointer",
-                  textAlign: "left",
-                }}
-              >
-                <Icon size={14} />
-                {label}
-              </button>
+              <div key={section.title} style={{ marginBottom: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setExpandedSections((prev) =>
+                      prev.includes(section.title)
+                        ? prev.filter((s) => s !== section.title)
+                        : [...prev, section.title]
+                    );
+                  }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    padding: "6px 10px",
+                    marginBottom: 4,
+                    border: "none",
+                    background: "transparent",
+                    color: theme.dim,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5,
+                    cursor: "pointer",
+                  }}
+                >
+                  {section.title}
+                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                </button>
+                {isExpanded && (
+                  <div>
+                    {section.items.map((item) => {
+                      const active = view === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => setView(item.id)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            width: "100%",
+                            padding: "6px 10px",
+                            marginBottom: 1,
+                            border: "1px solid transparent",
+                            borderRadius: 6,
+                            background: active ? theme.surface : "transparent",
+                            color: active ? theme.text : theme.muted,
+                            fontSize: 12,
+                            cursor: "pointer",
+                            textAlign: "left",
+                          }}
+                        >
+                          <item.icon size={14} />
+                          {item.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
+          
+          {/* Settings and Share at bottom */}
+          <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${theme.rowBorder}` }}>
+            <button
+              type="button"
+              onClick={() => setView("settings")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                width: "100%",
+                padding: "6px 10px",
+                marginBottom: 1,
+                border: "1px solid transparent",
+                borderRadius: 6,
+                background: view === "settings" ? theme.surface : "transparent",
+                color: view === "settings" ? theme.text : theme.muted,
+                fontSize: 12,
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <Settings size={14} />
+              Settings
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("share")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                width: "100%",
+                padding: "6px 10px",
+                border: "1px solid transparent",
+                borderRadius: 6,
+                background: view === "share" ? theme.surface : "transparent",
+                color: view === "share" ? theme.text : theme.muted,
+                fontSize: 12,
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <Share2 size={14} />
+              Share
+            </button>
+          </div>
         </nav>
 
         {/* Main content */}
