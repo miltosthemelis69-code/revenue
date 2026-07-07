@@ -1,46 +1,49 @@
-// Design system for Ledger — an homage to double-entry bookkeeping conventions:
-// green ink for credits/positive figures, red ink for debits/refunds, and otherwise
-// quiet, high-contrast, paper-and-ink neutrals. No gradients, no glow, no pill badges.
+// Design system for notjustvisits.
+//
+// The whole product makes one argument: most analytics tools show you traffic
+// and let you guess at revenue. This one shows you revenue and treats traffic
+// as context. The visual language says that out loud — anything that's just a
+// visit is quiet grey ink; anything that's actual money is the one warm color
+// on the page. No dashboards-within-dashboards, no ten-color chart legends,
+// no dark-mode-by-default cliché. Paper, ink, and a single signal color.
 
 export const theme = {
-  bg: "#121110",         // ink — warm near-black, not blue-black
-  panel: "#161412",      // barely-raised surface for grouped content
-  panelHover: "#1a1815",
-  line: "#2b2824",       // hairline dividers / borders
-  lineFaint: "#1d1b18",  // quieter internal separators
-  text: "#ECE7DD",       // paper
-  muted: "#9c968b",
-  faint: "#66605a",
-  credit: "#8FB39A",     // ledger green — the one accent, used for positive figures + primary actions
-  creditDeep: "#4F6F58",
-  debit: "#A8655C",      // ledger red — negative figures / refunds only, never decorative
-  amber: "#C9A24B",      // reserved strictly for "needs attention" states (Tier 4/5 predictive stuff), used sparingly
+  bg: "#F5F1E8",          // warm paper — not white, not grey
+  panel: "#FBF8F1",       // barely-lifted surface for grouped content
+  panelHover: "#EFEADB",
+  line: "#E1D9C6",        // hairline dividers / borders
+  lineFaint: "#EAE3D2",   // quieter internal separators
+  text: "#1C1810",        // ink
+  muted: "#726B58",       // quiet — used for "just a visit" data
+  faint: "#A79C82",       // faintest — labels, timestamps
+  credit: "#BF4E1E",      // signal — the one accent, real revenue only
+  creditDeep: "#8C3714",  // hover/pressed state of the accent
+  debit: "#9C4A3C",       // refunds / money leaving, close family to credit but muted
+  amber: "#A9791F",       // reserved strictly for "needs attention" states
 };
 
 export const globalCss = `
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
   * { box-sizing: border-box; }
   html, body { background: ${theme.bg}; }
-  .serif { font-family: 'Fraunces', Georgia, serif; }
-  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+  .serif { font-family: 'Newsreader', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
 
   .panel {
     background: ${theme.panel};
     border: 1px solid ${theme.line};
-    border-radius: 3px;
+    border-radius: 8px;
   }
   .row-hover:hover { background: ${theme.panelHover}; }
   .nav-item { transition: color .12s ease, border-color .12s ease; }
   .nav-item:hover { color: ${theme.text} !important; }
-  ::selection { background: #8FB39A33; }
+  ::selection { background: #BF4E1E29; }
 
   input, select, textarea {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     color: ${theme.text};
     background: ${theme.bg};
     border: 1px solid ${theme.line};
-    border-radius: 3px;
+    border-radius: 6px;
     padding: 8px 10px;
     font-size: 13px;
     outline: none;
@@ -56,25 +59,39 @@ export const globalCss = `
     background: ${theme.credit};
     color: ${theme.bg};
     border: none;
-    border-radius: 3px;
+    border-radius: 6px;
     padding: 8px 14px;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
   }
-  button.primary:hover { background: #9fc2ac; }
+  button.primary:hover { background: ${theme.creditDeep}; }
   button.ghost {
     background: transparent;
     color: ${theme.muted};
     border: 1px solid ${theme.line};
-    border-radius: 3px;
+    border-radius: 6px;
     padding: 8px 14px;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     cursor: pointer;
   }
   button.ghost:hover { border-color: ${theme.faint}; color: ${theme.text}; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12.5px;
+    padding: 5px 0;
+    margin-right: 18px;
+    cursor: pointer;
+    color: ${theme.faint};
+    border-bottom: 2px solid transparent;
+  }
+  .tab-btn.active { color: ${theme.text}; border-bottom-color: ${theme.credit}; }
+  .tab-btn:hover { color: ${theme.text}; }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
@@ -83,12 +100,13 @@ export const globalCss = `
 
 export function sectionLabelStyle() {
   return {
-    fontSize: 11,
+    fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+    fontSize: 10.5,
     color: theme.faint,
     marginBottom: 16,
     textTransform: "uppercase",
-    letterSpacing: 1.1,
-    fontWeight: 600,
+    letterSpacing: 1.2,
+    fontWeight: 500,
     paddingBottom: 10,
     borderBottom: `1px solid ${theme.lineFaint}`,
   };
@@ -100,7 +118,7 @@ export const cardTitleStyle = sectionLabelStyle;
 export function barTrackStyle() {
   return {
     height: 3,
-    borderRadius: 0,
+    borderRadius: 2,
     background: theme.lineFaint,
     overflow: "hidden",
   };

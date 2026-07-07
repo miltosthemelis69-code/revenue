@@ -82,7 +82,7 @@ export default function ShareView() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
               <div style={{ width: 18, height: 18, borderRadius: 4, background: theme.credit }} />
               <span style={{ fontWeight: 600, fontSize: 14 }}>statly.app</span>
-              <span style={{ fontSize: 11, color: theme.faint, marginLeft: "auto" }}>Powered by Ledger</span>
+              <span style={{ fontSize: 11, color: theme.faint, marginLeft: "auto" }}>Powered by notjustvisits</span>
             </div>
 
             {showLive && (

@@ -118,7 +118,7 @@ export default function Dashboard() {
   return (
     <div
       style={{
-        fontFamily: "'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif",
         background: theme.bg,
         color: theme.text,
         minHeight: "100vh",
@@ -139,8 +139,8 @@ export default function Dashboard() {
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
-          <span className="serif" style={{ fontSize: 18, fontStyle: "italic", letterSpacing: 0.2 }}>
-            Ledger
+          <span className="serif" style={{ fontSize: 17, fontStyle: "italic", letterSpacing: 0.1, whiteSpace: "nowrap" }}>
+            notjustvisits<span style={{ color: theme.credit }}>.</span>
           </span>
           <button
             type="button"

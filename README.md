@@ -1,19 +1,20 @@
-# revenue-main v1 — Tier 1 visual mockup
+# notjustvisits — v2 visual prototype
 
-Visual-only prototype for **Ledger** (indie revenue attribution). All data is fake — no backend.
+Visual-only prototype for **notjustvisits** (Stripe-native revenue attribution
+for indie founders — "not just visits, actual revenue"). All data is fake —
+no backend.
 
-## Tier 1 features (all included in v1)
+## What changed in v2
 
-| # | Feature | Status |
-|---|---------|--------|
-| 1 | Pageview tracking | ✅ Pages tab |
-| 2 | Referrer / UTM source tracking | ✅ Sources tab |
-| 3 | Device, browser, OS, country detection | ✅ Audience tab |
-| 4 | Custom events / goals (basic) | ✅ Events tab |
-| 5 | Excluded paths / timezone / basic settings | ✅ Settings tab |
-| 6 | Public shareable dashboard link | ✅ Share tab |
-
-**Overview** (pre-existing): revenue by channel, live sales feed, KPIs — Tier 2+ territory but kept as your home screen.
+- Full rebrand from the earlier "Ledger" concept to **notjustvisits**.
+- New design system: warm paper background, a single accent color (signal
+  orange) used exclusively for real revenue figures, everything else in
+  quiet ink/grey. Newsreader (serif), Space Grotesk (UI), JetBrains Mono
+  (numbers).
+- Overview page rebuilt to read like one continuous page — stat row,
+  revenue-vs-traffic chart, tabbed referrer/campaign, country/device,
+  browser/OS, AI & bot traffic, and a recent-revenue feed — instead of a
+  single chart + two side panels.
 
 ## Run locally
 
@@ -35,6 +36,7 @@ Connect your GitHub repo in Cloudflare Pages → every push to `main` auto-deplo
 ```
 src/
   Dashboard.jsx      # Shell + sidebar nav
+  styles.js          # Design tokens (theme, fonts, globalCss)
   data/mockTier1.js  # All fake data
-  views/             # One view per Tier 1 feature
+  views/             # One view per feature, shared.jsx holds reusable UI
 ```

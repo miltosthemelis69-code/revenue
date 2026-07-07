@@ -30,7 +30,7 @@ export default function EventsView() {
                 <div>
                   <div style={{ fontSize: 13.5 }}>{e.name}</div>
                   <div className="mono" style={{ fontSize: 11, color: theme.faint, marginTop: 3 }}>
-                    ledger.track(&apos;{e.key}&apos;)
+                    njv.track(&apos;{e.key}&apos;)
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
@@ -75,10 +75,10 @@ export default function EventsView() {
             Add tracking in your app:
             <pre className="mono" style={{ margin: "8px 0 0", fontSize: 11, color: theme.credit, whiteSpace: "pre-wrap" }}>
 {`// On button click
-ledger.track('signup_click');
+njv.track('signup_click');
 
 // Mark a goal
-ledger.goal('trial_start');`}
+njv.goal('trial_start');`}
             </pre>
           </div>
         </div>

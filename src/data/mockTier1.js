@@ -137,7 +137,7 @@ export const TIMEZONE_OPTIONS = [
 // Feature 6 — Public shareable dashboard
 export const SHARE_CONFIG = {
   slug: "statly",
-  url: "https://ledger.app/s/statly",
+  url: "https://notjustvisits.app/s/statly",
   enabled: true,
   showRevenue: true,
   showChannels: true,
@@ -600,8 +600,12 @@ export const AB_EXPERIMENTS = [
 export const money = (n) =>
   (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
+export const money2 = (n) =>
+  (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 export function fmtKpi(kpi) {
   if (kpi.format === "money") return money(kpi.value);
+  if (kpi.format === "money2") return money2(kpi.value);
   if (kpi.format === "pct") return kpi.value.toFixed(1) + "%";
   return kpi.value.toLocaleString("en-US");
 }
