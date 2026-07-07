@@ -1,29 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  Radio,
-  ChevronDown,
-  ChevronRight,
-  LayoutDashboard,
-  FileText,
-  Link2,
-  Users,
-  MousePointerClick,
-  Settings,
-  Share2,
-  Zap,
-  Gauge,
-  Filter,
-  Plug,
-  Layers,
-  Globe2,
-  Route,
-  TrendingUp,
-  Sparkles,
+  Activity,
+  BarChart3,
   Bot,
-  UserCircle2,
   Brain,
+  ChevronDown,
+  CircleDollarSign,
+  ExternalLink,
+  FileText,
+  Filter,
   Flame,
   FlaskConical,
+  Gauge,
+  Globe2,
+  Layers,
+  LayoutDashboard,
+  Link2,
+  MousePointerClick,
+  Plug,
+  Radio,
+  Route,
+  Search,
+  Settings,
+  Share2,
+  TrendingUp,
+  UserCircle2,
+  Users,
+  Zap,
 } from "lucide-react";
 import { SITE } from "./data/mockTier1";
 import { theme, globalCss } from "./styles";
@@ -51,42 +54,154 @@ import ExperimentsView from "./views/Experiments";
 
 const NAV_SECTIONS = [
   {
-    title: "Analytics",
+    title: "Revenue",
     items: [
-      { id: "overview", label: "Overview", icon: LayoutDashboard },
-      { id: "pages", label: "Pages", icon: FileText },
-      { id: "sources", label: "Sources", icon: Link2 },
-      { id: "audience", label: "Audience", icon: Users },
-      { id: "events", label: "Events", icon: MousePointerClick },
+      {
+        id: "overview",
+        label: "Overview",
+        icon: LayoutDashboard,
+        description: "Revenue, conversion, refunds, and the channels driving the business.",
+      },
+      {
+        id: "sources",
+        label: "Sources",
+        icon: Link2,
+        description: "Referrers, UTM campaigns, and revenue by acquisition source.",
+      },
+      {
+        id: "pages",
+        label: "Pages",
+        icon: FileText,
+        description: "Landing pages ranked by traffic quality and revenue influence.",
+      },
+      {
+        id: "funnels",
+        label: "Funnels",
+        icon: Filter,
+        description: "Signup, checkout, and content funnels with drop-off points.",
+      },
     ],
   },
   {
-    title: "Advanced",
+    title: "People",
     items: [
-      { id: "autoclicks", label: "Auto Clicks", icon: Zap },
-      { id: "webvitals", label: "Web Vitals", icon: Gauge },
-      { id: "funnels", label: "Funnels", icon: Filter },
-      { id: "integrations", label: "Integrations", icon: Plug },
+      {
+        id: "profiles",
+        label: "Customers",
+        icon: UserCircle2,
+        description: "Visitor profiles, identified customers, and lifetime value.",
+      },
+      {
+        id: "journeys",
+        label: "Journeys",
+        icon: Route,
+        description: "Session timelines showing the path from first visit to purchase.",
+      },
+      {
+        id: "audience",
+        label: "Audience",
+        icon: Users,
+        description: "Countries, devices, browsers, and operating systems.",
+      },
+      {
+        id: "cohorts",
+        label: "Cohorts",
+        icon: TrendingUp,
+        description: "Channel cohorts and retained revenue over time.",
+      },
     ],
   },
   {
-    title: "Insights",
+    title: "Product",
     items: [
-      { id: "sites", label: "Sites & Team", icon: Layers },
-      { id: "live", label: "Live Visitors", icon: Globe2 },
-      { id: "journeys", label: "Journeys", icon: Route },
-      { id: "cohorts", label: "Cohorts & LTV", icon: TrendingUp },
-      { id: "experience", label: "Experience", icon: Sparkles },
-      { id: "bots", label: "Bot Traffic", icon: Bot },
-      { id: "profiles", label: "Profiles", icon: UserCircle2 },
+      {
+        id: "events",
+        label: "Events",
+        icon: MousePointerClick,
+        description: "Custom events and goals that matter to activation and checkout.",
+      },
+      {
+        id: "autoclicks",
+        label: "Clicks",
+        icon: Zap,
+        description: "Automatically captured button, link, and CTA activity.",
+      },
+      {
+        id: "live",
+        label: "Live",
+        icon: Globe2,
+        description: "Realtime visitors and sales while launches are happening.",
+      },
+      {
+        id: "webvitals",
+        label: "Performance",
+        icon: Gauge,
+        description: "Core Web Vitals and page-level speed diagnostics.",
+      },
+      {
+        id: "experience",
+        label: "Experience",
+        icon: Activity,
+        description: "Experience score, weak pages, and UX health signals.",
+      },
     ],
   },
   {
-    title: "Growth",
+    title: "Lab",
     items: [
-      { id: "predictions", label: "Predictions", icon: Brain },
-      { id: "heatmaps", label: "Heatmaps", icon: Flame },
-      { id: "experiments", label: "Experiments", icon: FlaskConical },
+      {
+        id: "predictions",
+        label: "Predictions",
+        icon: Brain,
+        description: "Purchase intent scoring for high-value visitors.",
+      },
+      {
+        id: "heatmaps",
+        label: "Heatmaps",
+        icon: Flame,
+        description: "Click, scroll, and attention maps for key pages.",
+      },
+      {
+        id: "experiments",
+        label: "Experiments",
+        icon: FlaskConical,
+        description: "A/B tests with revenue and conversion outcomes.",
+      },
+      {
+        id: "bots",
+        label: "Bot Traffic",
+        icon: Bot,
+        description: "Known crawler traffic separated from human sessions.",
+      },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      {
+        id: "integrations",
+        label: "Integrations",
+        icon: Plug,
+        description: "Payment processors, search data, and external data sources.",
+      },
+      {
+        id: "sites",
+        label: "Sites & Team",
+        icon: Layers,
+        description: "Connected domains, teammates, and cross-site rollups.",
+      },
+      {
+        id: "share",
+        label: "Share",
+        icon: Share2,
+        description: "Public dashboard settings for build-in-public updates.",
+      },
+      {
+        id: "settings",
+        label: "Settings",
+        icon: Settings,
+        description: "Tracking preferences, timezone, and excluded paths.",
+      },
     ],
   },
 ];
@@ -115,217 +230,255 @@ const VIEWS = {
   share: ShareView,
 };
 
+function findNavItem(view) {
+  for (const section of NAV_SECTIONS) {
+    const item = section.items.find((navItem) => navItem.id === view);
+    if (item) return { ...item, section: section.title };
+  }
+  return NAV_SECTIONS[0].items[0];
+}
+
+function RailButton({ item, active, onClick }) {
+  const Icon = item.icon;
+
+  return (
+    <button
+      type="button"
+      className={`nav-item ${active ? "active" : ""}`}
+      onClick={onClick}
+      title={item.label}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
+        minHeight: 36,
+        padding: "8px 10px",
+        border: "none",
+        borderRadius: 6,
+        background: active ? "#fff" : "transparent",
+        color: active ? theme.heading : "#cbd5e1",
+        fontSize: 13,
+        fontWeight: active ? 700 : 500,
+        cursor: "pointer",
+        textAlign: "left",
+      }}
+    >
+      <Icon size={16} />
+      <span className="rail-label">{item.label}</span>
+    </button>
+  );
+}
+
 export default function Dashboard() {
   const [view, setView] = useState("overview");
   const [liveCount, setLiveCount] = useState(7);
-  const [siteOpen, setSiteOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState(["Analytics"]);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setLiveCount((c) => Math.max(1, c + (Math.random() > 0.5 ? 1 : -1)));
+      setLiveCount((count) => Math.max(1, count + (Math.random() > 0.5 ? 1 : -1)));
     }, 2400);
     return () => clearInterval(id);
   }, []);
 
   const ActiveView = VIEWS[view];
+  const activeMeta = useMemo(() => findNavItem(view), [view]);
 
   return (
     <div
+      className="shell"
       style={{
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontFamily: "'Inter', 'Aptos', -apple-system, BlinkMacSystemFont, sans-serif",
         background: theme.bg,
         color: theme.text,
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
       <style>{globalCss}</style>
 
-      {/* Top bar */}
-      <div
+      <aside
+        className="sidebar"
         style={{
+          position: "sticky",
+          top: 0,
+          minHeight: "100vh",
+          background: theme.appRail,
+          color: "#fff",
+          padding: 14,
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "16px 24px",
-          borderBottom: `1px solid ${theme.cardBorder}`,
+          flexDirection: "column",
+          gap: 16,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div className="rail-logo" style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 4px 10px" }}>
           <div
             style={{
-              width: 20,
-              height: 20,
-              borderRadius: 4,
-              background: theme.accent,
-            }}
-          />
-          <span style={{ fontWeight: 500, fontSize: 14 }}>Ledger</span>
-          <div
-            onClick={() => setSiteOpen((s) => !s)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              marginLeft: 8,
-              padding: "4px 8px",
-              borderRadius: 6,
-              background: theme.surface,
-              border: `1px solid ${theme.surfaceBorder}`,
-              cursor: "pointer",
-              fontSize: 12,
-              color: theme.muted,
+              width: 30,
+              height: 30,
+              borderRadius: 8,
+              background: "#ffffff",
+              color: theme.heading,
+              display: "grid",
+              placeItems: "center",
             }}
           >
-            {SITE.domain}
-            <ChevronDown size={12} />
+            <CircleDollarSign size={18} />
+          </div>
+          <div className="rail-label">
+            <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: 0 }}>Ledger</div>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Revenue attribution</div>
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: theme.green }}>
-            <Radio size={12} />
-            <span className="mono">{liveCount}</span>
-          </div>
-          <div style={{ fontSize: 12, color: theme.dim }}>Last 30 days</div>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Sidebar */}
-        <nav
+        <div
+          className="rail-meta"
           style={{
-            width: 200,
-            borderRight: `1px solid ${theme.cardBorder}`,
-            padding: "12px 8px",
-            flexShrink: 0,
-            overflowY: "auto",
+            border: "1px solid rgba(255,255,255,0.1)",
+            background: "rgba(255,255,255,0.04)",
+            borderRadius: 8,
+            padding: 10,
           }}
         >
-          {NAV_SECTIONS.map((section) => {
-            const isExpanded = expandedSections.includes(section.title);
-            return (
-              <div key={section.title} style={{ marginBottom: 8 }}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setExpandedSections((prev) =>
-                      prev.includes(section.title)
-                        ? prev.filter((s) => s !== section.title)
-                        : [...prev, section.title]
-                    );
-                  }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    padding: "6px 10px",
-                    marginBottom: 4,
-                    border: "none",
-                    background: "transparent",
-                    color: theme.dim,
-                    fontSize: 10,
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    cursor: "pointer",
-                  }}
-                >
-                  {section.title}
-                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                </button>
-                {isExpanded && (
-                  <div>
-                    {section.items.map((item) => {
-                      const active = view === item.id;
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => setView(item.id)}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                            width: "100%",
-                            padding: "6px 10px",
-                            marginBottom: 1,
-                            border: "1px solid transparent",
-                            borderRadius: 6,
-                            background: active ? theme.surface : "transparent",
-                            color: active ? theme.text : theme.muted,
-                            fontSize: 12,
-                            cursor: "pointer",
-                            textAlign: "left",
-                          }}
-                        >
-                          <item.icon size={14} />
-                          {item.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+          <button
+            type="button"
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+              border: "none",
+              background: "transparent",
+              color: "#fff",
+              padding: 0,
+              cursor: "pointer",
+            }}
+          >
+            <span style={{ minWidth: 0 }}>
+              <span style={{ display: "block", fontSize: 12, color: "#94a3b8" }}>Current site</span>
+              <span className="mono" style={{ display: "block", fontSize: 12, marginTop: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {SITE.domain}
+              </span>
+            </span>
+            <ChevronDown size={14} color="#94a3b8" />
+          </button>
+        </div>
+
+        <nav className="sidebar-nav" style={{ display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", paddingRight: 2 }}>
+          {NAV_SECTIONS.map((section) => (
+            <div className="sidebar-section" key={section.title} style={{ marginBottom: 2 }}>
+              <div
+                className="rail-section-title"
+                style={{
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  letterSpacing: 0,
+                  margin: "0 0 5px 10px",
+                }}
+              >
+                {section.title}
               </div>
-            );
-          })}
-          
-          {/* Settings and Share at bottom */}
-          <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${theme.rowBorder}` }}>
-            <button
-              type="button"
-              onClick={() => setView("settings")}
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {section.items.map((item) => (
+                  <RailButton key={item.id} item={item} active={view === item.id} onClick={() => setView(item.id)} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+      </aside>
+
+      <section style={{ minWidth: 0 }}>
+        <header
+          className="topbar"
+          style={{
+            minHeight: 68,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+            padding: "14px 28px",
+            borderBottom: `1px solid ${theme.cardBorder}`,
+            background: "rgba(255,255,255,0.86)",
+            backdropFilter: "blur(14px)",
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+          }}
+        >
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, color: theme.dim, fontSize: 12, marginBottom: 3 }}>
+              <span>{activeMeta.section}</span>
+              <span>/</span>
+              <span>{activeMeta.label}</span>
+            </div>
+            <h1 style={{ margin: 0, fontSize: 22, lineHeight: 1.2, color: theme.heading, letterSpacing: 0 }}>
+              {activeMeta.id === "overview" ? "Revenue overview" : activeMeta.label}
+            </h1>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                width: "100%",
-                padding: "6px 10px",
-                marginBottom: 1,
-                border: "1px solid transparent",
+                height: 36,
+                padding: "0 12px",
                 borderRadius: 6,
-                background: view === "settings" ? theme.surface : "transparent",
-                color: view === "settings" ? theme.text : theme.muted,
-                fontSize: 12,
-                cursor: "pointer",
-                textAlign: "left",
+                background: "#fff",
+                border: `1px solid ${theme.surfaceBorder}`,
+                color: theme.muted,
+                fontSize: 13,
               }}
             >
-              <Settings size={14} />
-              Settings
+              <Search size={14} />
+              <span>Search</span>
+            </div>
+            <button type="button" className="ghost" style={{ height: 36, display: "flex", alignItems: "center", gap: 7 }}>
+              Last 30 days
+              <ChevronDown size={14} />
             </button>
-            <button
-              type="button"
-              onClick={() => setView("share")}
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
-                width: "100%",
-                padding: "6px 10px",
-                border: "1px solid transparent",
+                gap: 7,
+                height: 36,
+                padding: "0 10px",
                 borderRadius: 6,
-                background: view === "share" ? theme.surface : "transparent",
-                color: view === "share" ? theme.text : theme.muted,
+                background: theme.greenSoft,
+                color: theme.green,
+                border: `1px solid #bbf7d0`,
                 fontSize: 12,
-                cursor: "pointer",
-                textAlign: "left",
+                fontWeight: 700,
               }}
             >
-              <Share2 size={14} />
-              Share
+              <Radio size={13} />
+              <span className="mono">{liveCount}</span>
+              <span>live</span>
+            </div>
+            <button type="button" className="primary" style={{ height: 36, display: "flex", alignItems: "center", gap: 7 }}>
+              <BarChart3 size={14} />
+              Report
             </button>
           </div>
-        </nav>
+        </header>
 
-        {/* Main content */}
-        <main style={{ flex: 1, padding: "20px 24px 48px", maxWidth: 1200, overflow: "auto" }}>
+        <main className="content-wrap" style={{ padding: "22px 28px 52px", maxWidth: 1360, margin: "0 auto" }}>
+          {activeMeta.id !== "overview" && (
+            <div className="card" style={{ padding: "14px 16px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+              <div style={{ fontSize: 13, color: theme.muted, lineHeight: 1.45 }}>{activeMeta.description}</div>
+              <button type="button" className="ghost" style={{ display: "flex", alignItems: "center", gap: 7, whiteSpace: "nowrap" }}>
+                Open docs
+                <ExternalLink size={13} />
+              </button>
+            </div>
+          )}
           <ActiveView />
         </main>
-      </div>
+      </section>
     </div>
   );
 }
