@@ -1,5 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ChevronDown, ArrowLeft } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  ChevronDown,
+  ArrowLeft,
+  LayoutGrid,
+  TrendingUp,
+  MousePointerClick,
+  Gauge,
+  Settings2,
+} from "lucide-react";
 import { SITE } from "./data/mockTier1";
 import { theme, globalCss } from "./styles";
 import OverviewView from "./views/Overview";
@@ -23,59 +31,6 @@ import ProfilesView from "./views/Profiles";
 import PredictionsView from "./views/Predictions";
 import HeatmapsView from "./views/Heatmaps";
 import ExperimentsView from "./views/Experiments";
-
-// Grouped by what a founder is actually trying to find out — not by build order.
-const NAV_GROUPS = [
-  {
-    label: null,
-    items: [{ id: "overview", label: "Overview" }],
-  },
-  {
-    label: "Traffic",
-    items: [
-      { id: "pages", label: "Pages" },
-      { id: "sources", label: "Sources" },
-      { id: "audience", label: "Audience" },
-      { id: "live", label: "Live" },
-      { id: "bots", label: "Bot traffic" },
-    ],
-  },
-  {
-    label: "Behavior",
-    items: [
-      { id: "events", label: "Events" },
-      { id: "autoclicks", label: "Auto clicks" },
-      { id: "funnels", label: "Funnels" },
-      { id: "journeys", label: "Journeys" },
-      { id: "profiles", label: "Profiles" },
-      { id: "heatmaps", label: "Heatmaps" },
-      { id: "experiments", label: "Experiments" },
-    ],
-  },
-  {
-    label: "Revenue",
-    items: [
-      { id: "integrations", label: "Integrations" },
-      { id: "cohorts", label: "Cohorts & LTV" },
-      { id: "predictions", label: "Predictions" },
-    ],
-  },
-  {
-    label: "Performance",
-    items: [
-      { id: "webvitals", label: "Web vitals" },
-      { id: "experience", label: "Experience" },
-    ],
-  },
-  {
-    label: "Workspace",
-    items: [
-      { id: "sites", label: "Sites & team" },
-      { id: "settings", label: "Settings" },
-      { id: "share", label: "Share" },
-    ],
-  },
-];
 
 const VIEWS = {
   overview: OverviewView,
@@ -101,6 +56,187 @@ const VIEWS = {
   share: ShareView,
 };
 
+// Everything that isn't the dense Overview page lives one tap behind a small
+// floating toolbar instead of a permanent sidebar — the Overview already
+// answers "how's it going", these are the deliberate deep-dives.
+const TOOL_GROUPS = [
+  {
+    id: "overview",
+    label: "Overview",
+    icon: LayoutGrid,
+    single: "overview",
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    icon: TrendingUp,
+    items: [
+      { id: "integrations", label: "Integrations" },
+      { id: "cohorts", label: "Cohorts & LTV" },
+      { id: "predictions", label: "Predictions" },
+    ],
+  },
+  {
+    id: "behavior",
+    label: "Behavior",
+    icon: MousePointerClick,
+    items: [
+      { id: "events", label: "Events" },
+      { id: "autoclicks", label: "Auto clicks" },
+      { id: "funnels", label: "Funnels" },
+      { id: "journeys", label: "Journeys" },
+      { id: "profiles", label: "Profiles" },
+      { id: "pages", label: "Pages (full table)" },
+      { id: "sources", label: "Sources (full table)" },
+      { id: "audience", label: "Audience (full table)" },
+      { id: "live", label: "Live" },
+      { id: "bots", label: "Bot traffic" },
+    ],
+  },
+  {
+    id: "quality",
+    label: "Quality",
+    icon: Gauge,
+    items: [
+      { id: "webvitals", label: "Web vitals" },
+      { id: "experience", label: "Experience score" },
+      { id: "heatmaps", label: "Heatmaps" },
+      { id: "experiments", label: "Experiments" },
+    ],
+  },
+  {
+    id: "workspace",
+    label: "Workspace",
+    icon: Settings2,
+    items: [
+      { id: "sites", label: "Sites & team" },
+      { id: "settings", label: "Settings" },
+      { id: "share", label: "Share" },
+    ],
+  },
+];
+
+function FloatingToolbar({ view, onSelect }) {
+  const [openGroup, setOpenGroup] = useState(null);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function onDocClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpenGroup(null);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const activeGroup = TOOL_GROUPS.find(
+    (g) => g.single === view || (g.items && g.items.some((i) => i.id === view))
+  );
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "fixed",
+        bottom: 22,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 40,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      {openGroup && (
+        <div
+          className="panel"
+          style={{
+            padding: 6,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 190,
+            boxShadow: "0 10px 30px rgba(28,24,16,0.14)",
+          }}
+        >
+          {TOOL_GROUPS.find((g) => g.id === openGroup).items.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => {
+                onSelect(item.id);
+                setOpenGroup(null);
+              }}
+              style={{
+                textAlign: "left",
+                background: view === item.id ? theme.panelHover : "transparent",
+                border: "none",
+                padding: "8px 12px",
+                borderRadius: 5,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 13,
+                color: view === item.id ? theme.text : theme.muted,
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = theme.panelHover)}
+              onMouseLeave={(e) => {
+                if (view !== item.id) e.currentTarget.style.background = "transparent";
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div
+        className="panel"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          padding: 5,
+          borderRadius: 40,
+          boxShadow: "0 10px 30px rgba(28,24,16,0.14)",
+        }}
+      >
+        {TOOL_GROUPS.map((g) => {
+          const Icon = g.icon;
+          const isActive = activeGroup && activeGroup.id === g.id;
+          return (
+            <button
+              key={g.id}
+              type="button"
+              title={g.label}
+              onClick={() => {
+                if (g.single) {
+                  onSelect(g.single);
+                  setOpenGroup(null);
+                } else {
+                  setOpenGroup(openGroup === g.id ? null : g.id);
+                }
+              }}
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+                border: "none",
+                background: isActive || openGroup === g.id ? theme.credit : "transparent",
+                color: isActive || openGroup === g.id ? theme.bg : theme.muted,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Icon size={16} />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard({ onBack }) {
   const [view, setView] = useState("overview");
   const [liveCount, setLiveCount] = useState(7);
@@ -122,13 +258,12 @@ export default function Dashboard({ onBack }) {
         background: theme.bg,
         color: theme.text,
         minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
       <style>{globalCss}</style>
 
-      {/* Top bar */}
+      {/* Top bar — no sidebar. Everything else lives on one page, or one tap
+          away via the floating toolbar bottom-center. */}
       <div
         style={{
           display: "flex",
@@ -190,61 +325,11 @@ export default function Dashboard({ onBack }) {
         </div>
       </div>
 
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Sidebar — text only, grouped by what it answers, not by how it was built */}
-        <nav
-          style={{
-            width: 190,
-            borderRight: `1px solid ${theme.line}`,
-            padding: "20px 22px",
-            flexShrink: 0,
-            overflowY: "auto",
-          }}
-        >
-          {NAV_GROUPS.map((group, gIdx) => (
-            <div key={group.label || "root"} style={{ marginBottom: gIdx === NAV_GROUPS.length - 1 ? 0 : 22 }}>
-              {group.label && (
-                <div style={{ fontSize: 10.5, color: theme.faint, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, fontWeight: 600 }}>
-                  {group.label}
-                </div>
-              )}
-              {group.items.map(({ id, label }) => {
-                const active = view === id;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setView(id)}
-                    className="nav-item"
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      padding: "5px 0 5px 10px",
-                      marginBottom: 1,
-                      background: "none",
-                      border: "none",
-                      borderLeft: `2px solid ${active ? theme.credit : "transparent"}`,
-                      color: active ? theme.text : theme.muted,
-                      fontFamily: "inherit",
-                      fontSize: 13,
-                      fontWeight: active ? 500 : 400,
-                      cursor: "pointer",
-                      textAlign: "left",
-                    }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-        </nav>
+      <main style={{ padding: "28px 32px 110px", maxWidth: 1180, margin: "0 auto" }}>
+        <ActiveView />
+      </main>
 
-        {/* Main content */}
-        <main style={{ flex: 1, padding: "28px 32px 64px", maxWidth: 1180, overflow: "auto" }}>
-          <ActiveView />
-        </main>
-      </div>
+      <FloatingToolbar view={view} onSelect={setView} />
     </div>
   );
 }
