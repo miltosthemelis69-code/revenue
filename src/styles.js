@@ -8,18 +8,27 @@
 // no dark-mode-by-default cliché. Paper, ink, and a single signal color.
 
 export const theme = {
-  bg: "#F5F1E8",          // warm paper — not white, not grey
-  panel: "#FBF8F1",       // barely-lifted surface for grouped content
-  panelHover: "#EFEADB",
-  line: "#E1D9C6",        // hairline dividers / borders
-  lineFaint: "#EAE3D2",   // quieter internal separators
-  text: "#1C1810",        // ink
-  muted: "#726B58",       // quiet — used for "just a visit" data
-  faint: "#A79C82",       // faintest — labels, timestamps
-  credit: "#BF4E1E",      // signal — the one accent, real revenue only
-  creditDeep: "#8C3714",  // hover/pressed state of the accent
-  debit: "#9C4A3C",       // refunds / money leaving, close family to credit but muted
-  amber: "#A9791F",       // reserved strictly for "needs attention" states
+  bg: "#F7F7F5",           // off-white — not stark white, not warm cream
+  panel: "#FCFCFB",        // barely-lifted surface for grouped content
+  panelHover: "#EFEFEB",
+  line: "#E3E3DE",         // hairline dividers / borders
+  lineFaint: "#EBEBE7",    // quieter internal separators
+  text: "#1C1810",         // ink
+  muted: "#726B58",        // quiet — used for "just a visit" data
+  faint: "#A79C82",        // faintest — labels, timestamps
+  credit: "#BF4E1E",       // signal — the one accent, real revenue only
+  creditDeep: "#8C3714",   // hover/pressed state of the accent
+  debit: "#9C4A3C",        // refunds / money leaving, close family to credit but muted
+  amber: "#A9791F",        // reserved strictly for "needs attention" states
+
+  // Chart-only tokens — charts sit on a true-white inset (Linear/Vercel/Stripe
+  // style) even though the surrounding page is warm paper, so the data
+  // visualization itself reads as calm, neutral, and un-decorated.
+  chartBg: "#FFFFFF",
+  chartBorder: "#E5E7EB",
+  chartGrid: "rgba(17,17,17,0.06)",
+  chartGray: "#9CA3AF",
+  chartAxis: "#A1A1AA",
 };
 
 export const globalCss = `
@@ -39,7 +48,7 @@ export const globalCss = `
   ::selection { background: #BF4E1E29; }
 
   input, select, textarea {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Geist Sans', sans-serif;
     color: ${theme.text};
     background: ${theme.bg};
     border: 1px solid ${theme.line};
@@ -61,7 +70,7 @@ export const globalCss = `
     border: none;
     border-radius: 6px;
     padding: 8px 14px;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Geist Sans', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -73,7 +82,7 @@ export const globalCss = `
     border: 1px solid ${theme.line};
     border-radius: 6px;
     padding: 8px 14px;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Geist Sans', sans-serif;
     font-size: 13px;
     cursor: pointer;
   }
@@ -82,7 +91,7 @@ export const globalCss = `
   .tab-btn {
     background: none;
     border: none;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Geist Sans', sans-serif;
     font-size: 12.5px;
     padding: 5px 0;
     margin-right: 18px;
@@ -92,6 +101,25 @@ export const globalCss = `
   }
   .tab-btn.active { color: ${theme.text}; border-bottom-color: ${theme.credit}; }
   .tab-btn:hover { color: ${theme.text}; }
+
+  .pill-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid ${theme.line};
+    border-radius: 999px;
+    font-family: 'Geist Sans', sans-serif;
+    font-size: 12px;
+    padding: 5px 12px;
+    margin-right: 8px;
+    cursor: pointer;
+    color: ${theme.muted};
+  }
+  .pill-tab.active { border-color: ${theme.credit}; color: ${theme.text}; background: ${theme.credit}12; }
+  .pill-tab:hover { border-color: ${theme.faint}; }
+
+  .recharts-tooltip-wrapper { outline: none; }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }

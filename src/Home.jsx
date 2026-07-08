@@ -15,7 +15,7 @@ export default function Home({ onOpenSite }) {
   return (
     <div
       style={{
-        fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontFamily: "'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif",
         background: theme.bg,
         color: theme.text,
         minHeight: "100vh",

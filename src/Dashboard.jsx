@@ -164,7 +164,7 @@ function IconRail({ view, onSelect }) {
           top: "50%",
           transform: "translateY(-50%)",
           padding: "6px 11px",
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Geist Sans', sans-serif",
           fontSize: 12.5,
           color: theme.text,
           whiteSpace: "nowrap",
@@ -315,7 +315,7 @@ function IconRail({ view, onSelect }) {
                         border: "none",
                         padding: "8px 12px",
                         borderRadius: 5,
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: "'Geist Sans', sans-serif",
                         fontSize: 13,
                         color: view === item.id ? theme.text : theme.muted,
                         cursor: "pointer",
@@ -381,7 +381,7 @@ export default function Dashboard({ onBack }) {
   return (
     <div
       style={{
-        fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontFamily: "'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif",
         background: theme.bg,
         color: theme.text,
         minHeight: "100vh",

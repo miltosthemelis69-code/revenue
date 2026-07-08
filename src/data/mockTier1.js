@@ -254,6 +254,83 @@ export const GSC_DATA = {
   ],
 };
 
+// Regions / cities — same shape as COUNTRIES so the "Where they are" panel
+// can flip between Country / Region / City tabs without a different renderer.
+export const REGIONS = [
+  { label: "California", pct: 18, visits: 2670, revenue: 1780 },
+  { label: "England", pct: 12, visits: 1780, revenue: 1120 },
+  { label: "New York", pct: 9, visits: 1335, revenue: 860 },
+  { label: "Bavaria", pct: 7, visits: 1038, revenue: 610 },
+  { label: "Ontario", pct: 6, visits: 890, revenue: 480 },
+  { label: "Île-de-France", pct: 4, visits: 593, revenue: 290 },
+  { label: "Other", pct: 44, visits: 6524, revenue: 3280 },
+];
+
+export const CITIES = [
+  { label: "San Francisco", pct: 9, visits: 1335, revenue: 940 },
+  { label: "London", pct: 8, visits: 1186, revenue: 780 },
+  { label: "New York", pct: 6, visits: 890, revenue: 610 },
+  { label: "Berlin", pct: 5, visits: 742, revenue: 410 },
+  { label: "Toronto", pct: 4, visits: 593, revenue: 320 },
+  { label: "Paris", pct: 3, visits: 445, revenue: 240 },
+  { label: "Other", pct: 65, visits: 9639, revenue: 5120 },
+];
+
+// Entry pages / exit links — same shape as PAGES so "What they viewed" can
+// flip between Page / Entry page / Exit link tabs.
+export const ENTRY_PAGES = [
+  { path: "/", views: 6210, avgTime: "1m 42s" },
+  { path: "/pricing", views: 1840, avgTime: "0m 58s" },
+  { path: "/blog/launch-post", views: 1620, avgTime: "2m 10s" },
+  { path: "/docs", views: 740, avgTime: "3m 30s" },
+  { path: "/signup", views: 410, avgTime: "0m 22s" },
+];
+
+export const EXIT_LINKS = [
+  { path: "/checkout", views: 2180, avgTime: "exit" },
+  { path: "/pricing", views: 1740, avgTime: "exit" },
+  { path: "/docs", views: 960, avgTime: "exit" },
+  { path: "/blog/launch-post", views: 820, avgTime: "exit" },
+  { path: "/", views: 640, avgTime: "exit" },
+];
+
+// Visitor payment-goal journeys — who completed the "Payment" goal, where
+// they came from, what they spent, and how long it took them to convert.
+export const PAYMENT_JOURNEYS = [
+  { name: "gue** ******", customer: true, country: "IT", flag: "🇮🇹", device: "Desktop", os: "Mac OS", browser: "Safari", source: "YouTube", spent: 169, timeToComplete: "17 hours", completedAt: "Yesterday at 11:27 AM" },
+  { name: "Mar** ******", customer: true, country: "GB", flag: "🇬🇧", device: "Desktop", os: "Mac OS", browser: "Chrome", source: "Direct/None", spent: 169, timeToComplete: "a month", completedAt: "Jul 6th at 6:13 PM" },
+  { name: "Noa** ******", customer: true, country: "FR", flag: "🇫🇷", device: "Mobile", os: "iOS", browser: "Mobile Safari", source: "marclou.com", spent: 299, timeToComplete: "8 hours", completedAt: "Jul 6th at 4:46 PM" },
+  { name: "MrN** ******", customer: true, country: "NL", flag: "🇳🇱", device: "Desktop", os: "Mac OS", browser: "Chrome", source: "trustmrr.com", spent: 299, timeToComplete: "10 hours", completedAt: "Jul 6th at 7:24 AM" },
+  { name: "Jua** ******", customer: true, country: "CO", flag: "🇨🇴", device: "Desktop", os: "Mac OS", browser: "Chrome", source: "Direct/None", spent: 169, timeToComplete: "31 minutes", completedAt: "Jul 2nd at 1:16 AM" },
+  { name: "Luc** ******", customer: true, country: "FR", flag: "🇫🇷", device: "Desktop", os: "Mac OS", browser: "Chrome", source: "Google", spent: 169, timeToComplete: "4 minutes", completedAt: "Jun 30th at 8:52 AM" },
+  { name: "Joe** ******", customer: true, country: "GB", flag: "🇬🇧", device: "Mobile", os: "iOS", browser: "Mobile Safari", source: "marclou.com", spent: 169, timeToComplete: "2 hours", completedAt: "Jun 29th at 2:22 PM" },
+];
+
+// AI-assistant referral trend + breakdown — how much of the "who sent them"
+// traffic is coming from AI answer engines vs. classic search indexing.
+export const AI_TRAFFIC_TREND = [
+  { day: "Jun 11", aiAnswers: 4, indexing: 2 },
+  { day: "Jun 14", aiAnswers: 5, indexing: 3 },
+  { day: "Jun 17", aiAnswers: 6, indexing: 3 },
+  { day: "Jun 20", aiAnswers: 8, indexing: 4 },
+  { day: "Jun 23", aiAnswers: 58, indexing: 5 },
+  { day: "Jun 26", aiAnswers: 62, indexing: 6 },
+  { day: "Jun 29", aiAnswers: 44, indexing: 7 },
+  { day: "Jul 2", aiAnswers: 18, indexing: 6 },
+  { day: "Jul 4", aiAnswers: 22, indexing: 8 },
+  { day: "Jul 6", aiAnswers: 67, indexing: 9 },
+  { day: "Jul 8", aiAnswers: 20, indexing: 7 },
+];
+
+export const AI_ASSISTANTS = [
+  { label: "ChatGPT", visits: 437 },
+  { label: "Gemini", visits: 43 },
+  { label: "Claude", visits: 6 },
+  { label: "DuckDuckGo", visits: 4 },
+];
+
+export const AI_TRAFFIC_TOTALS = { aiAnswers: 490, indexing: 254, training: 204 };
+
 // Tier 2-9: Affiliate tracking
 export const AFFILIATES = [
   { id: 1, name: "Tech Reviewer", code: "techreview", clicks: 840, signups: 42, revenue: 1260, commissionRate: 20, owed: 252 },
